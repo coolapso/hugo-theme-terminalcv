@@ -25,7 +25,7 @@ Live example at: https://cv.4s3ti.net
   * **social:** shows social networks
     * Any social network is supported, even the ones that don't exist! just provide a name and a URL
     * The social network name can be hidden and show only the URL
-  * **workexp:** shows work experience information
+  * **work:** shows work experience information
     * Title can have custom color
   * **education:** shows education information
     * Title can have custom color

@@ -54,7 +54,7 @@ jQuery(document).ready(function($) {
 
     function work () {
         term.echo("");
-        {{ with .Site.Params.workexp }}
+        {{ with .Site.Params.work }}
             {{ range .}}
                 term.echo("[[b;{{ .color | default "grey" }};]{{ .jobTitle }}]");
                 term.echo("{{ .company }}");
@@ -177,7 +177,7 @@ jQuery(document).ready(function($) {
                     "|      |       |       |   \n"+
                     "|______|_______|_______|   \n"+
                     "[[;red;]May the source be with you]\n"+
-                    "[[;grey;]https://github.com/4s3ti/hugo-theme-terminalCV]\n");
+                    "[[;grey;]https://github.com/4s3ti/terminalcv\n");
       }
 
     //Funciton used by StartX to draw the progressBar
