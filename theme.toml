@@ -1,0 +1,21 @@
+# theme.toml template for a Hugo theme
+# See https://github.com/gohugoio/hugoThemes#themetoml for an example
+
+name = "TerminalCV"
+license = "MIT"
+licenselink = "https://github.com/4s3ti/hugo-theme-terminalCV/blob/master/LICENSE"
+description = "Terminal CV/Resume For geeks and sysadmins"
+homepage = "https://cv.4s3ti.net/"
+tags = ["OnlineCV","Singlepage","personal"]
+features = ["terminal","easy","singleplage","customization"]
+min_version = "0.41.0"
+
+[author]
+  name = "4s3ti"
+  homepage = "https://4s3ti.net"
+
+# If porting an existing theme
+[original]
+  name = "4s3ti"
+  homepage = "https://cv.4s3t.net"
+  repo = "https://github.com/4s3ti/hugo-theme-terminalCV"

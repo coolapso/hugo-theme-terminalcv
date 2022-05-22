@@ -1,0 +1,27 @@
+    <meta charset="utf-8" />
+    <title>{{ $.Site.Title }} </title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="{{ .Site.Params.description }}">
+    <meta property="og:title" content="{{ $.Site.Title }}" />
+    <meta property="og:type" content="website"/>
+    <meta property="og:url" content="{{ $.Site.BaseURL }}" />
+    <link rel="sitemap" type="application/xml" title="Sitemap" href=""/>
+    <link rel="canonical" href="{{ .Permalink }}" />
+    {{- partial "favicons.html" . }}
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.terminal/2.33.2/js/jquery.terminal.min.js"></script>
+    <script src="https://unpkg.com/jquery.terminal/js/autocomplete_menu.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/jquery.terminal/2.33.2/css/jquery.terminal.min.css" rel="stylesheet"/>
+
+    <style>
+        body {
+            width: 100%;
+            font-size: 18px;
+        }
+    </style>
+    {{ if .Site.Params.analytics.code }}
+        {{ .Site.Params.analytics.code }}
+    {{ end }}

@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w2.org/1999/xhtml">
+<html lang="{{ .Site.Language }}">
+    <head>
+        {{ partial "head.html" . }}
+    </head>
+        <body>
+        {{ block "body" . }}
+        {{ end }}
+        </body>
+</html>

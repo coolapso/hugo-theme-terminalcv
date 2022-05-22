@@ -1,0 +1,151 @@
+## Example Config file
+BaseURL: "https://example.com"
+#theme: "terminalCV"
+title: "terminalCV"
+
+params:
+  description: "4s3ti cv terminal format"
+  prompt: "newuser@terminalcv"
+# promptColor: grey
+# promptSimbols: ":~$"
+# promptSimbolsColor: grey
+# startxLocation: https://example.com
+# hideSocialName: true
+# exitLocation: 'about:blank'
+# hidesource: true
+  greeting: | 
+    Welcome to my online resume
+
+
+    Type 'help' for a list of available commands
+
+
+  whois: 
+      name: "John Doe"
+      profession: "Unknown"
+      location: "Somewhere"
+      email: "foo@someemail.com"
+      homelink: "https://myHomePage.com"
+      description: |
+              Here you can write something catchy about yourself
+
+  social:
+    ## IF you want to keep them aligned just add spaces
+    - name: "github"
+      url: "          https://github.com"
+    - name: "facebook"
+      url: "        https://facebook.com"
+    - name: "myspace"
+      url: "         https://myspace.com"
+    - name: "hi5"
+      url: "             https://www.hi5.com"
+    - name: "instagram"
+      url: "       https://instagram.com"
+    - name: "Another social"
+      url: "  https://anothersocial.com"
+
+  workexp:
+    - jobTitle: Job With Red Title
+      color: red
+      company: '-' 
+      location: somewhere
+      date: August 2010 - Present
+      description: Some description about this red title job
+
+    - jobTitle: Job with purple title
+      color: purple
+      company: '-'
+      location: somewhere elese
+      date: July 2000  - July 2010
+      description: Some description about this purple job
+
+    - jobTitle: Job with default color title
+      company: '-'
+      location: anywhere
+      date: July 2008 - 2010
+      description: Description about this default color job
+
+  education:
+   - courseName: Red Color training
+     color: red
+     date: June 2019 - July 2019
+     description: Descrption about red color trianing
+
+   - courseName: Default color training
+     date: Sept 2004 - Jun 2008
+     #description: There is no need for description
+
+  skills:
+    - name: Skill 1
+      percentage: 90
+      Description: you can add a description
+
+    - name: Skill 2
+      percentage: 30
+      #description: or you can leave it comented   
+
+    - name: Skill 3
+      color: blue
+      percentage: 50
+      description: Skill names can have colors too
+
+  softskills:
+    - name: SoftSkill 1
+      color: red
+      percentage: 80
+      #description:
+
+    - name:  SoftSkill 2
+      #color: 
+      percentage: 90
+      description: Description
+
+  languages:
+    - name: English
+      color: Blue
+      percentage: 50
+      #description: 
+
+    - name: Gibberish
+      percentage: 100
+      description: pasghettipigglywiggly
+
+
+  projects:
+    - title: Project Red
+      color: red
+      date: since 2019
+      link: https://example.com
+      description: Describing red stuff
+
+    - title: Project Blue
+      color: blue
+      date: since 2016
+      link: https://example.com/blue
+      #description: nothing to describe
+
+    - title: Project Default
+      date: Since 2017
+      link: https://example.com/default
+      #description: not there either
+
+  misc: 
+    #commandName: newcommand
+    title: "This Section can have a different command name"
+    titleColor: teal
+    content: |
+          Here the title and the content can have different colors
+          The content can be multi
+          
+          line
+
+          And spaces       will be respected as well
+          This section will have the default command: misc
+          but you can name it something else with the property
+          commandName: <String>
+          Give it a shot and try and uncomment the line 
+          commandName: newcommand
+          now instead of misc you can execute the newcommand for this section
+          Auto completion will know it too! :D 
+
+    contentColor: orange
