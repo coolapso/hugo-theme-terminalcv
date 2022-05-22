@@ -57,18 +57,18 @@ Live example at: https://cv.4s3ti.net
 
 # How to start
 
-You can download the theme manually by going to [https://github.com/4s3ti/hugo-theme-terminalcv.git](https://github.com/4s3ti/hugo-theme-terminalcv.git) and pasting it to `themes/terminalcv` in your root directory.
+You can download the theme manually by going to [https://github.com/4s3ti/terminalcv.git](https://github.com/4s3ti/terminalcv.git) and pasting it to `themes/terminalcv` in your root directory.
 
 You can also clone it directly to your Hugo folder:
 
 ``` bash
-$ git clone https://github.com/4s3ti/hugo-theme-terminalcv.git themes/terminalcv
+$ git clone https://github.com/4s3ti/terminalcv.git themes/terminalcv
 ```
 
 If you don't want to make any radical changes, it's the best option, because you can get new updates when they are available. To do so, include it as a git submodule:
 
 ``` bash
-$ git submodule add https://github.com/4s3ti/hugo-theme-terminalcv.git themes/hello-4s3ti
+$ git submodule add https://github.com/4s3ti/terminalcv.git themes/terminalcv
 ```
 # How to configure
 
