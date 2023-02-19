@@ -4,7 +4,7 @@ jQuery(document).ready(function($) {
     var animation = false;
     var availableCommands = ["all", "whois", 'social', 'work', 'education',
                     'skills', 'softskills', 'languages',
-                    'projects', 
+                    'projects' 'certificates', 
                     {{ if .Site.Params.startxLocation }} 'startx', {{ end }}
                     {{ if .Site.Params.exitLocation }} 'exit', {{ end }}
                     {{ if .Site.Params.misc }}{{ .Site.Params.misc.commandName | default "misc"}},{{end}}
@@ -51,6 +51,22 @@ jQuery(document).ready(function($) {
         {{ end }}
         term.echo("")
     }
+
+    function certificates () {
+          term.echo("");
+          {{ with .Site.Params.certificates }}
+              {{ range . }}
+			      term.echo("[[b;{{ .color | default "grey" }};]{{ .certName }}]");
+                  term.echo("{{ .company }}");
+                  term.echo("{{ .date }}");
+                  {{ if .description }}
+                      term.echo("{{ .description }}");
+                  {{ end }}
+                  term.echo("-------------------- ");
+                  term.echo("");
+              {{ end }}
+          {{ end }}
+      }
 
     function work () {
         term.echo("");
@@ -241,6 +257,9 @@ jQuery(document).ready(function($) {
             case 'projects':
                 projects();
                 break;
+	    case 'certificates':
+                certificates();
+                break;
             case '{{ .Site.Params.misc.commandName | default "misc"}}':
                 misc();
                 break;
@@ -256,6 +275,7 @@ jQuery(document).ready(function($) {
                 softskills();
                 languages();
                 projects();
+		certificates();
                 {{ if .Site.Params.misc }}
                     misc();
                 {{ end }}
