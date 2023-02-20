@@ -99,5 +99,6 @@ Let me know and feel free to open a Pull Request and add it to this list:
 
 |link                 | Description       |
 |---------------------|-------------------|
-|https://cv.4s3ti.net | Simple CV         | 
+|https://cv.4s3ti.net | Simple CV         |
+|https://pauldavidjarvis.com | Personal Website & Academic Resume |
 
