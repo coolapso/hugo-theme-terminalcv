@@ -129,7 +129,7 @@ params:
       link: https://example.com/default
       #description: not there either
 
-  certificates:
+  certifications:
   - certName: Example Cert
     company: Example Certifying Company
     date: Date of Completion
