@@ -129,6 +129,12 @@ params:
       link: https://example.com/default
       #description: not there either
 
+  certifications:
+  - certName: Example Cert
+    company: Example Certifying Company
+    date: Date of Completion
+    #description: Lorem Ipsum
+  
   misc: 
     #commandName: newcommand
     title: "This Section can have a different command name"

@@ -4,7 +4,8 @@ jQuery(document).ready(function($) {
     var animation = false;
     var availableCommands = ["all", "whois", 'social', 'work', 'education',
                     'skills', 'softskills', 'languages',
-                    'projects', 
+                    'projects',
+	            {{ if .Site.Params.certifications }} 'certifications', {{ end }}
                     {{ if .Site.Params.startxLocation }} 'startx', {{ end }}
                     {{ if .Site.Params.exitLocation }} 'exit', {{ end }}
                     {{ if .Site.Params.misc }}{{ .Site.Params.misc.commandName | default "misc"}},{{end}}
@@ -51,7 +52,25 @@ jQuery(document).ready(function($) {
         {{ end }}
         term.echo("")
     }
-
+	    
+    function certifications () {
+        term.echo("");
+        {{ with .Site.Params.certifications }}
+            {{ range .}}
+                term.echo("[[b;{{ .color | default "grey" }};]{{ .certName }}]");
+	    	term.echo("{{ .date }}");
+                {{ if .company }}
+                    term.echo("{{ .company }}");
+                {{ end }}
+                {{ if .description }}
+                    term.echo("{{ .description }}");
+                {{ end }}
+                term.echo("-------------------- ");
+                term.echo("");
+            {{ end }}
+        {{ end }}
+    }
+	    
     function work () {
         term.echo("");
         {{ with .Site.Params.work }}
@@ -241,6 +260,9 @@ jQuery(document).ready(function($) {
             case 'projects':
                 projects();
                 break;
+	    case 'certifications':
+                certifications();
+                break;
             case '{{ .Site.Params.misc.commandName | default "misc"}}':
                 misc();
                 break;
@@ -256,6 +278,7 @@ jQuery(document).ready(function($) {
                 softskills();
                 languages();
                 projects();
+		certifications();
                 {{ if .Site.Params.misc }}
                     misc();
                 {{ end }}
