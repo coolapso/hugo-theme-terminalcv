@@ -86,8 +86,9 @@ Improvements and suggestions are always welcome, feel free to open an Issue or P
 
 If you like this theme and want to support / contribute in a different way you can always: 
 
-<a href="https://www.buymeacoffee.com/4s3ti" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/default-yellow.png" alt="Buy Me A Coffee" style="height: 51px !important;width: 217px !important;" >
-
+<a href="https://www.buymeacoffee.com/4s3ti" target="_blank">
+  <img src="https://cdn.buymeacoffee.com/buttons/default-yellow.png" alt="Buy Me A Coffee" style="height: 51px !important;width: 217px !important;" />
+</a>
 
 # jcubic/Jquery.Terminal
 
