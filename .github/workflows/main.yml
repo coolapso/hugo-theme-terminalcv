@@ -9,14 +9,8 @@ jobs:
   release:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-
-      - name: Install semantic-release plugins
-        run: |
-          npm install @semantic-release/github -D
-          npm install @semantic-release/changelog -D
-          
+      - uses: actions/checkout@v4
       - name: Release
+        uses: go-semantic-release/action@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: npx semantic-release
