@@ -304,6 +304,8 @@ jQuery(document).ready(function($) {
                 setTimeout(function(){window.location = '{{ .Site.Params.exitLocation }}'}, 2000);
                 break;
             {{ end }}
+	    case '':
+		break;
             default:
                 term.echo("\nunknown command: " + command + "\n" +
                           "please type 'help' for a list of available commands\n");
