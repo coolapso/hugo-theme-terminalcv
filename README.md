@@ -1,15 +1,16 @@
 # terminalCV
-[![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release)
+[![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/go-semantic-release/semantic-release)
+[![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-%23FE5196?logo=conventionalcommits&logoColor=white)](https://conventionalcommits.org)
 
 
-![terminalCV](images/screenshot.png)
+![terminalCV](images/screenshot.png) 
 
 
 # General Information 
 
 An easy to setup and (almost) fully customizable command line style CV theme
 
-Live example at: https://cv.4s3ti.net
+Live example at: https://coolapso.sh
 
 # Features
 
@@ -51,24 +52,27 @@ Live example at: https://cv.4s3ti.net
   * **source:** Shows the glider and the theme github repo URL
     * Enabled by default
     * Can be disabled
+  * **version:** Shows the website version
+    * Disabled by default
+    * only enabled if provided a version parameter
 * Command auto completion
 * progression bars can be interrupted by pressing `ctrl+d` 
 * Favicons 
 
 # How to start
 
-You can download the theme manually by going to [https://github.com/4s3ti/terminalcv.git](https://github.com/4s3ti/terminalcv.git) and pasting it to `themes/terminalcv` in your root directory.
+You can download the theme manually by going to [https://github.com/coolapso/hugo-theme-terminalcv.git](https://github.com/coolapso/hugo-theme-terminalcv.git) and pasting it to `themes/terminalcv` in your root directory.
 
 You can also clone it directly to your Hugo folder:
 
 ``` bash
-$ git clone https://github.com/4s3ti/terminalcv.git themes/terminalcv
+$ git clone https://github.com/coolapso/hugo-theme-terminalcv.git themes/terminalcv
 ```
 
 If you don't want to make any radical changes, it's the best option, because you can get new updates when they are available. To do so, include it as a git submodule:
 
 ``` bash
-$ git submodule add https://github.com/4s3ti/terminalcv.git themes/terminalcv
+$ git submodule add https://github.com/coolapso/hugo-theme-terminalcv.git themes/terminalcv
 ```
 # How to configure
 
@@ -86,7 +90,7 @@ Improvements and suggestions are always welcome, feel free to open an Issue or P
 
 If you like this theme and want to support / contribute in a different way you can always: 
 
-<a href="https://www.buymeacoffee.com/4s3ti" target="_blank">
+<a href="https://www.buymeacoffee.com/coolapso" target="_blank">
   <img src="https://cdn.buymeacoffee.com/buttons/default-yellow.png" alt="Buy Me A Coffee" style="height: 51px !important;width: 217px !important;" />
 </a>
 
@@ -100,6 +104,5 @@ Let me know and feel free to open a Pull Request and add it to this list:
 
 |link                 | Description       |
 |---------------------|-------------------|
-|https://cv.4s3ti.net | Simple CV         |
-|https://pauldavidjarvis.com | Personal Website & Academic Resume |
+|https://coolapso.sh  | Simple CV         |
 

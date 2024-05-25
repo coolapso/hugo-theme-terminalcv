@@ -4,7 +4,7 @@ BaseURL: "https://example.com"
 title: "terminalCV"
 
 params:
-  description: "4s3ti cv terminal format"
+  description: "My terminal cv"
   prompt: "newuser@terminalcv"
 # promptColor: grey
 # promptSimbols: ":~$"
