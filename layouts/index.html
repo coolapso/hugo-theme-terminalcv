@@ -2,15 +2,16 @@
 <script> 
 jQuery(document).ready(function($) {
     var animation = false;
-    var availableCommands = ["all", "whois", 'social', 'work', 'education',
-                    'skills', 'softskills', 'languages',
-                    'projects',
-	            {{ if .Site.Params.certifications }} 'certifications', {{ end }}
-                    {{ if .Site.Params.startxLocation }} 'startx', {{ end }}
-                    {{ if .Site.Params.exitLocation }} 'exit', {{ end }}
-                    {{ if .Site.Params.misc }}{{ .Site.Params.misc.commandName | default "misc"}},{{end}}
-                    {{ if not .Site.Params.hideSource }} 'source' {{ end }}
-                    ] 
+    var availableCommands = [
+        "all", "whois", 'social', 'work', 'education',
+        'skills', 'softskills', 'languages', 'projects',
+        {{ if .Site.Params.certifications }} 'certifications', {{ end }}
+        {{ if .Site.Params.startxLocation }} 'startx', {{ end }}
+        {{ if .Site.Params.exitLocation }} 'exit', {{ end }}
+        {{ if .Site.Params.misc }}{{ .Site.Params.misc.commandName | default "misc"}},{{end}}
+        {{ if not .Site.Params.hideSource }} 'source',{{ end }}
+        {{ if .Site.Params.version }} 'version', {{ end }}
+    ]
 
     $('body').terminal(function(command, term) {
 
@@ -52,13 +53,13 @@ jQuery(document).ready(function($) {
         {{ end }}
         term.echo("")
     }
-	    
+        
     function certifications () {
         term.echo("");
         {{ with .Site.Params.certifications }}
             {{ range .}}
                 term.echo("[[b;{{ .color | default "grey" }};]{{ .certName }}]");
-	    	term.echo("{{ .date }}");
+            term.echo("{{ .date }}");
                 {{ if .company }}
                     term.echo("{{ .company }}");
                 {{ end }}
@@ -70,7 +71,7 @@ jQuery(document).ready(function($) {
             {{ end }}
         {{ end }}
     }
-	    
+        
     function work () {
         term.echo("");
         {{ with .Site.Params.work }}
@@ -184,20 +185,20 @@ jQuery(document).ready(function($) {
                   "\n" + availableCommands.join(' ')+ '\n') 
     }
 
-      function source() {
-          term.echo("        _______            \n"+
-                    "       |       |           \n"+
-                    "       |       |           \n"+
-                    "       |_______|_______    \n"+
-	                "               |       |   \n"+
-                    "               |       |   \n"+
-                    " ______________|_______|   \n"+
-                    "|      |       |       |   \n"+
-                    "|      |       |       |   \n"+
-                    "|______|_______|_______|   \n"+
-                    "[[;red;]May the source be with you]\n"+
-                    "[[;grey;]https://github.com/4s3ti/terminalcv\n");
-      }
+    function source() {
+        term.echo("        _______            \n"+
+                  "       |       |           \n"+
+                  "       |       |           \n"+
+                  "       |_______|_______    \n"+
+                  "               |       |   \n"+
+                  "               |       |   \n"+
+                  " ______________|_______|   \n"+
+                  "|      |       |       |   \n"+
+                  "|      |       |       |   \n"+
+                  "|______|_______|_______|   \n"+
+                  "[[;red;]May the source be with you]\n"+
+                  "[[;grey;]https://github.com/4s3ti/terminalcv\n");
+    }
 
     //Funciton used by StartX to draw the progressBar
     function progress(percent, width) {
@@ -260,7 +261,7 @@ jQuery(document).ready(function($) {
             case 'projects':
                 projects();
                 break;
-	    case 'certifications':
+        case 'certifications':
                 certifications();
                 break;
             case '{{ .Site.Params.misc.commandName | default "misc"}}':
@@ -278,7 +279,7 @@ jQuery(document).ready(function($) {
                 softskills();
                 languages();
                 projects();
-		certifications();
+                certifications();
                 {{ if .Site.Params.misc }}
                     misc();
                 {{ end }}
@@ -304,8 +305,13 @@ jQuery(document).ready(function($) {
                 setTimeout(function(){window.location = '{{ .Site.Params.exitLocation }}'}, 2000);
                 break;
             {{ end }}
-	    case '':
-		break;
+            {{ if .Site.Params.version }}
+            case 'version':
+                term.echo("{{ .Site.Params.version }}")
+                break;
+            {{ end }}
+            case '':
+                break;
             default:
                 term.echo("\nunknown command: " + command + "\n" +
                           "please type 'help' for a list of available commands\n");
