@@ -9,197 +9,13 @@ jQuery(document).ready(function($) {
         {{ if .Site.Params.startxLocation }} 'startx', {{ end }}
         {{ if .Site.Params.exitLocation }} 'exit', {{ end }}
         {{ if .Site.Params.misc }}{{ .Site.Params.misc.commandName | default "misc"}},{{end}}
-        {{ if not .Site.Params.hideSource }} 'source',{{ end }}
+        {{ if not .Site.Params.source }} 'source',{{ end }}
         {{ if .Site.Params.version }} 'version', {{ end }}
     ]
 
     $('body').terminal(function(command, term) {
 
-        /* Functions to be called by commands */
-        function whois () {
-            term.echo("");
-            {{ with .Site.Params.whois }} 
-                term.echo ("[[b;grey;]Name:]\t\t\t{{ .name }}");
-                term.echo ("[[b;grey;]Profession:]\t\t{{ .profession }}");
-                term.echo ("[[b;grey;]Location:]\t\t{{ .location }}");
-                {{ if .email }}
-                    term.echo ("[[b;grey;]Email:]\t\t\t{{ .email }}");
-                {{ end }}
-                {{ if .homelink }}
-                    term.echo ("[[b;grey;]Homepage:]\t\t{{ .homelink }}");
-                {{ end }}
-                {{ if .description }}
-                    term.echo ("")
-                    term.echo ("{{ .description }}")
-                {{ end }}
-            {{ end }}
-            term.echo("");
-          }
-
-        function social() {
-            term.echo("");
-            {{ if .Site.Params.hideSocialName }}
-                {{ with .Site.Params.social }}
-                    {{ range . }} 
-                        term.echo("{{ .url }}");
-                    {{ end }}
-                {{ end }}
-            {{ else }}
-                {{ with .Site.Params.social }}
-                    {{ range . }}
-                        term.echo("{{ .name }}:" + "{{ .url }}");
-                    {{ end }}
-                {{ end }}
-            {{ end }}
-            term.echo("")
-        }
         
-        function certifications() {
-            term.echo("");
-            {{ with .Site.Params.certifications }}
-                {{ range .}}
-                    term.echo("[[b;{{ .color | default "grey" }};]{{ .certName }}]");
-                term.echo("{{ .date }}");
-                    {{ if .company }}
-                        term.echo("{{ .company }}");
-                    {{ end }}
-                    {{ if .description }}
-                        term.echo("{{ .description }}");
-                    {{ end }}
-                    term.echo("-------------------- ");
-                    term.echo("");
-                {{ end }}
-            {{ end }}
-        }
-        
-        function work() {
-            term.echo("");
-            {{ with .Site.Params.work }}
-                {{ range .}}
-                    term.echo("[[b;{{ .color | default "grey" }};]{{ .jobTitle }}]");
-                    term.echo("{{ .company }}");
-                    term.echo("{{ .location}}");
-                    term.echo("{{ .date }}");
-                    term.echo ("");
-                    term.echo("{{ .description }}");
-                    term.echo("-------------------- ");
-                    term.echo("");
-                {{ end }}
-            {{ end }}
-        }
-
-        function education() {
-            term.echo("");
-            {{ with .Site.Params.education }}
-                {{ range . }}
-                    term.echo("[[b;{{ .color | default "grey" }};]{{ .courseName }}]");
-                    term.echo("{{ .date }}");
-                    {{ if .description }}
-                        term.echo("{{ .description }}");
-                    {{ end }}
-                    term.echo("-------------------- ");
-                    term.echo("");
-                {{ end }}
-            {{ end }}
-        }
-
-        function skills() {
-            term.echo(" ");
-            {{ with .Site.Params.Skills }}
-                {{ range . }}
-                    var bar_length = Math.round({{ .percentage }} / 10);
-                    var bar_filled = Array(bar_length + 1).join("&#9611;");
-                    var bar_blank= Array(11 - bar_length).join("&#9617;");
-                    term.echo("[[b;{{ .color | default "grey" }};]{{ .name }}:]\n" +
-                            bar_filled + bar_blank + 
-                            {{ .percentage }} +"%");
-                    {{ if .description }}
-                        term.echo("{{ .description }}");
-                    {{ end }}
-                    term.echo ("")
-                {{ end }}
-            {{ end }}
-        }
-
-        function softskills() {
-            term.echo("");
-            {{ with .Site.Params.softSkills }}
-                {{ range . }}
-                    var bar_length = Math.round({{ .percentage }} / 10);
-                    var bar_filled = Array(bar_length + 1).join("&#9611;");
-                    var bar_blank= Array(11 - bar_length).join("&#9617;");
-                    term.echo("[[b;{{ .color | default "grey" }};]{{ .name }}:]\n" +
-                           bar_filled + bar_blank +
-                           {{ .percentage }} +"%");
-                    {{ if .description }}
-                        term.echo("{{ .description }}");
-                    {{ end }}
-                    term.echo ("")
-                {{ end }}
-            {{ end }}
-        }
-      
-        function languages() {
-            term.echo("");
-            {{ with .Site.Params.languages }}
-                {{ range . }}
-                    var bar_length = Math.round({{ .percentage }} / 10);
-                    var bar_filled = Array(bar_length + 1).join("&#9611;");
-                    var bar_blank= Array(11 - bar_length).join("&#9617;");
-                    term.echo("[[b;{{ .color | default "grey" }};]{{ .name }}:]\n" +
-                            "" + bar_filled + bar_blank + 
-                            " " + {{ .percentage }} +"%");
-                    {{ if .description }}
-                        term.echo("{{ .description }}");
-                    {{ end }}
-                    term.echo("")
-                {{ end }}
-            {{ end }}
-        }
-    
-        function projects() {
-            term.echo("");
-            {{ with .Site.Params.projects }}
-                {{ range .}}
-                    term.echo("[[b;{{ .color | default "grey" }};]{{ .title }}]");
-                    term.echo("{{ .date }}")
-                    term.echo("{{ .link }}")
-                    {{ if .description }}
-                        term.echo("{{ .description }}");
-                    {{ end }}
-                    term.echo("-----------------------");
-                    term.echo("");
-              {{ end }}
-            {{ end }}
-        }
-
-        function misc() {
-            term.echo ("")
-            term.echo("[[b;{{ .Site.Params.misc.titleColor }};]{{ .Site.Params.misc.title }}]" + "\n")
-            term.echo ("[[;{{.Site.Params.misc.contentColor }};]{{ .Site.Params.misc.content }}]")
-            term.echo ("")
-        }
-
-        function help() {
-            term.echo("\n[[b;white;]Available commands:]\n" +
-                      "\n" + availableCommands.join(' ')+ '\n') 
-        }
-
-        function source() {
-            term.echo("        _______            \n"+
-                      "       |       |           \n"+
-                      "       |       |           \n"+
-                      "       |_______|_______    \n"+
-                      "               |       |   \n"+
-                      "               |       |   \n"+
-                      " ______________|_______|   \n"+
-                      "|      |       |       |   \n"+
-                      "|      |       |       |   \n"+
-                      "|______|_______|_______|   \n"+
-                      "[[;red;]May the source be with you]\n"+
-                      "[[;grey;]https://github.com/coolapso/hugo-theme-terminalcv\n");
-        }
-
         //Funciton used by StartX to draw the progressBar
         function progress(percent, width) {
             var size = Math.round(width*percent/100);
@@ -233,70 +49,256 @@ jQuery(document).ready(function($) {
                 }
             })();
         }
-        /* Functions End */
+
+        function progressBar(number) {
+            var barLength = Math.round(number / 10);
+            var barFilled = Array(barLength + 1).join("&#9611;");
+            var barBlank= Array(11 - barLength).join("&#9617;");
+
+            return barFilled + barBlank
+        }
+
+        function echoArray(array) {
+            for (i = 0; i < array.length; i += 1) {
+                term.echo(array[i]);
+            }
+        }
+
+        var whois = [
+        {{ with .Site.Params.whois }} 
+            '[[b;grey;]Name:]\t\t\t{{ .name }}\n' + 
+            '[[b;grey;]Profession:]\t\t{{ .profession }}\n' +
+            '[[b;grey;]Location:]\t\t{{ .location }}\n' +
+            {{ if .email }}
+            '[[b;grey;]Email:]\t\t\t{{ .email }}\n' +
+            {{ end }}
+            {{ if .homelink }}
+            '[[b;grey;]Homepage:]\t\t{{ .homelink }}\n' +
+            {{ end }}
+            {{ if .description }}
+            '{{ .description }}' +
+            {{ end }}
+            '\r',
+        {{ end }}
+        ];
+
+        var social = [
+        {{ if .Site.Params.hideSocialName }}
+            {{ with .Site.Params.social }}
+                {{ range . }} 
+                '{{ .url }}',
+                {{ end }}
+                '\r',
+            {{ end }}
+        {{ else }}
+            {{ with .Site.Params.social }}
+                {{ range . }}
+                '{{ .name }}: {{ .url }}',
+                {{ end }}
+                '\r',
+            {{ end }}
+        {{ end }}
+        ];
+
+        var certifications = [
+        {{ with .Site.Params.certifications }}
+            {{ range . }}
+                '---\n' +
+                '[[b;{{ .color | default "grey" }};]{{ .certName }}]\n' +
+                '{{ .date }}\n' +
+                {{ if .company }}
+                '{{ .company }}\n' +
+                {{ end }}
+                {{ if .description }}
+                '{{ .description }}\n' +
+                {{ end }}
+                '\r',
+            {{ end }}
+        {{ end }}
+        ];
+        
+        var work = [
+        {{ with .Site.Params.work }}
+            {{ range .}}
+                '---\n' +
+                '[[b;{{ .color | default "grey" }};]{{ .jobTitle }}]\n' +
+                '{{ .company }}\n' +
+                '{{ .location}}\n' +
+                '{{ .date }}\n' +
+                '\n' +
+                '{{ .description }}' +
+                '\r',
+            {{ end }}
+        {{ end }}
+        ];
+
+        var education = [
+        {{ with .Site.Params.education }}
+            {{ range . }}
+                '---\n' +
+                '[[b;{{ .color | default "grey" }};]{{ .courseName }}]\n' +
+                '{{ .date }}\n' +
+                {{ if .description }}
+                    "{{ .description }}\n" +
+                {{ end }}
+                "\r",
+            {{ end }}
+        {{ end }}
+        ];
+
+        var projects = [
+        {{ with .Site.Params.projects }}
+            {{ range .}}
+                '---\n' +
+                '[[b;{{ .color | default "grey" }};]{{ .title }}]\n' +
+                '{{ .date }}\n' +
+                '{{ .link }}\n' +
+                {{ if .description }}
+                '{{ .description }}\n' +
+                {{ end }}
+                "\r",
+          {{ end }}
+        {{ end }}
+        ]
+
+        var skills = [
+        {{ with .Site.Params.skills }}
+            {{ range . }}
+                '[[b;{{ .color | default "grey" }};]{{ .name }}:]\n' +
+                progressBar({{ .percentage }}) +
+                '{{ .percentage }}' + '%\n' +
+                {{ if .description }}
+                '{{ .description }}\n' +
+                {{ end }}
+                '\r',
+            {{ end }}
+        {{ end }}
+        ]
+
+        var softSkills = [
+        {{ with .Site.Params.softSkills }}
+            {{ range . }}
+                '[[b;{{ .color | default "grey" }};]{{ .name }}:]\n' +
+                progressBar({{ .percentage }}) +
+                '{{ .percentage }}' + '%\n' + 
+                {{ if .description }}
+                '{{ .description }}\n' +
+                {{ end }}
+                '\r',
+            {{ end }}
+        {{ end }}
+        ]
+      
+        var languages = [
+        {{ with .Site.Params.languages }}
+            {{ range . }}
+                '[[b;{{ .color | default "grey" }};]{{ .name }}:]\n' +
+                progressBar({{ .percentage }})+ 
+                '{{ .percentage }}' + '%\n' +
+                {{ if .description }}
+                '{{ .description }}\n' +
+                {{ end }}
+                '\r',
+            {{ end }}
+        {{ end }}
+        ]
+    
+         var misc = [
+             {{ with .Site.Params.misc }}
+            '[[b;{{ .titleColor }};]{{ .title }}]\n' +
+            '[[;{{ .contentColor }};]{{ .content }}]\n',
+             {{ end }}
+        ]
+
+        var help = '\n[[b;white;]Available commands:]\n' +
+                      '\n\t\t' + availableCommands.join(' ') + '\n';
+
+        var source =  '        _______            \n' +
+                      '       |       |           \n' +
+                      '       |       |           \n' +
+                      '       |_______|_______    \n' +
+                      '               |       |   \n' +
+                      '               |       |   \n' +
+                      ' ______________|_______|   \n' +
+                      '|      |       |       |   \n' +
+                      '|      |       |       |   \n' +
+                      '|______|_______|_______|   \n' +
+                      '[[;red;]May the source be with you]\n' +
+                      '[[;grey;]https://github.com/coolapso/hugo-theme-terminalcv\n';
+
+        all = [ 
+            whois,
+            social,
+            work,
+            education,
+            skills,
+            softSkills,
+            languages,
+            projects,
+            certifications,
+            misc,
+            {{ if .Site.Params.misc }}
+            {{ end }}
+            {{ if .Site.Params.source }}
+            source,
+            {{ end }}
+        ]
 
         commands = command.split(/[ ]+/);
+        if (commands[0] == 'less') {
+            useLess = true;
+            commands.shift();
+        } 
+                    
         switch(commands[0]) {
             case 'whois':
-                whois();
+                echoArray(whois);
                 break;
             case 'social':
-                social();
+                echoArray(social);
                 break;
             case 'work':
-                work();
+                echoArray(work);
                 break;
             case 'education':
-                education();
+                echoArray(education);
                 break;
             case 'skills':
-                skills();
+                echoArray(skills);
                 break;
             case 'softskills':
-                softskills();
+                echoArray(softSkills);
                 break;
             case 'languages':
-                languages();
+                echoArray(languages);
                 break;
             case 'projects':
-                projects();
+                echoArray(projects);
                 break;
             case 'certifications':
-                certifications();
+                term.echo(certifications);
                 break;
             case '{{ .Site.Params.misc.commandName | default "misc"}}':
-                misc();
+                echoArray(misc);
                 break;
             case 'help':
-                help();
+                term.echo(help);
                 break;
             case 'all':
-                whois();
-                social();
-                work();
-                education();
-                skills();
-                softskills();
-                languages();
-                projects();
-                certifications();
-                {{ if .Site.Params.misc }}
-                    misc();
-                {{ end }}
-                {{ if not .Site.Params.hideSource }}
-                    source();
-                {{ end }}
+                echoArray(all.flat(1));
                 break;
             {{ if .Site.Params.startxLocation }}
             case 'startx':
-                term.echo("loading ...")
+                term.echo("loading ...");
                 loading();
                 setTimeout(function(){window.location = "{{ .Site.Params.startxLocation }}"}, 2000);
                 break;
             {{ end }}
             case ':(){:|:&};:':
+                term.echo("nice try");
+                break;
             case 'source':
-                source();
+                term.echo(source);
                 break;
             {{ if .Site.Params.exitLocation }}
             case 'exit':
@@ -307,7 +309,7 @@ jQuery(document).ready(function($) {
             {{ end }}
             {{ if .Site.Params.version }}
             case 'version':
-                term.echo("{{ .Site.Params.version }}")
+                term.echo("{{ .Site.Params.version }}");
                 break;
             {{ end }}
             case '':
@@ -319,6 +321,7 @@ jQuery(document).ready(function($) {
     }, {
         prompt: '[[;{{ .Site.Params.promptColor | default "grey" }};]{{ .Site.Params.prompt }}][[;{{ .Site.Params.promptSimbolsColor | default "grey" }};]{{.Site.Params.promptSimbols | default ":~$"}}]' + " ",
         greetings: "[[b;{{ .Site.Params.greetingColor | default "white" }};]{{ .Site.Params.greeting }}]",
+
         keydown: function(e, term) {
             if (animation) {
                 if (e.which == 68 && e.ctrlKey) { // CTRL+D
