@@ -9,13 +9,18 @@ jQuery(document).ready(function($) {
         {{ if .Site.Params.startxLocation }} 'startx', {{ end }}
         {{ if .Site.Params.exitLocation }} 'exit', {{ end }}
         {{ if .Site.Params.misc }}{{ .Site.Params.misc.commandName | default "misc"}},{{end}}
-        {{ if not .Site.Params.source }} 'source',{{ end }}
+        {{ if not .Site.Params.hideSource }} 'source',{{ end }}
         {{ if .Site.Params.version }} 'version', {{ end }}
-    ]
+    ];
 
     $('body').terminal(function(command, term) {
 
         
+        let useLess = false;
+        {{if .Site.Params.useLess }}
+        useLess = true;
+        {{ end }}
+
         //Funciton used by StartX to draw the progressBar
         function progress(percent, width) {
             var size = Math.round(width*percent/100);
@@ -59,13 +64,17 @@ jQuery(document).ready(function($) {
         }
 
         function echoArray(array) {
-            for (i = 0; i < array.length; i += 1) {
-                term.echo(array[i]);
+            if (useLess) {
+                term.less(array);
+            } else {
+                for (i = 0; i < array.length; i += 1) {
+                    term.echo(array[i]);
+                }
             }
         }
 
         var whois = [
-        {{ with .Site.Params.whois }} 
+        {{ with .Site.Params.whois.details }} 
             '[[b;grey;]Name:]\t\t\t{{ .name }}\n' + 
             '[[b;grey;]Profession:]\t\t{{ .profession }}\n' +
             '[[b;grey;]Location:]\t\t{{ .location }}\n' +
@@ -83,15 +92,16 @@ jQuery(document).ready(function($) {
         ];
 
         var social = [
+        // TODO: Move this setting to the social settings
         {{ if .Site.Params.hideSocialName }}
-            {{ with .Site.Params.social }}
+            {{ with .Site.Params.social.details }}
                 {{ range . }} 
                 '{{ .url }}',
                 {{ end }}
                 '\r',
             {{ end }}
         {{ else }}
-            {{ with .Site.Params.social }}
+            {{ with .Site.Params.social.details }}
                 {{ range . }}
                 '{{ .name }}: {{ .url }}',
                 {{ end }}
@@ -101,7 +111,7 @@ jQuery(document).ready(function($) {
         ];
 
         var certifications = [
-        {{ with .Site.Params.certifications }}
+        {{ with .Site.Params.certifications.details }}
             {{ range . }}
                 '---\n' +
                 '[[b;{{ .color | default "grey" }};]{{ .certName }}]\n' +
@@ -118,7 +128,7 @@ jQuery(document).ready(function($) {
         ];
         
         var work = [
-        {{ with .Site.Params.work }}
+        {{ with .Site.Params.work.details }}
             {{ range .}}
                 '---\n' +
                 '[[b;{{ .color | default "grey" }};]{{ .jobTitle }}]\n' +
@@ -133,7 +143,7 @@ jQuery(document).ready(function($) {
         ];
 
         var education = [
-        {{ with .Site.Params.education }}
+        {{ with .Site.Params.education.details }}
             {{ range . }}
                 '---\n' +
                 '[[b;{{ .color | default "grey" }};]{{ .courseName }}]\n' +
@@ -147,7 +157,7 @@ jQuery(document).ready(function($) {
         ];
 
         var projects = [
-        {{ with .Site.Params.projects }}
+        {{ with .Site.Params.projects.details }}
             {{ range .}}
                 '---\n' +
                 '[[b;{{ .color | default "grey" }};]{{ .title }}]\n' +
@@ -159,10 +169,10 @@ jQuery(document).ready(function($) {
                 "\r",
           {{ end }}
         {{ end }}
-        ]
+        ];
 
         var skills = [
-        {{ with .Site.Params.skills }}
+        {{ with .Site.Params.skills.details }}
             {{ range . }}
                 '[[b;{{ .color | default "grey" }};]{{ .name }}:]\n' +
                 progressBar({{ .percentage }}) +
@@ -173,10 +183,10 @@ jQuery(document).ready(function($) {
                 '\r',
             {{ end }}
         {{ end }}
-        ]
+        ];
 
         var softSkills = [
-        {{ with .Site.Params.softSkills }}
+        {{ with .Site.Params.softSkills.details }}
             {{ range . }}
                 '[[b;{{ .color | default "grey" }};]{{ .name }}:]\n' +
                 progressBar({{ .percentage }}) +
@@ -187,10 +197,10 @@ jQuery(document).ready(function($) {
                 '\r',
             {{ end }}
         {{ end }}
-        ]
+        ];
       
         var languages = [
-        {{ with .Site.Params.languages }}
+        {{ with .Site.Params.languages.details }}
             {{ range . }}
                 '[[b;{{ .color | default "grey" }};]{{ .name }}:]\n' +
                 progressBar({{ .percentage }})+ 
@@ -201,17 +211,19 @@ jQuery(document).ready(function($) {
                 '\r',
             {{ end }}
         {{ end }}
-        ]
+        ];
     
          var misc = [
              {{ with .Site.Params.misc }}
             '[[b;{{ .titleColor }};]{{ .title }}]\n' +
             '[[;{{ .contentColor }};]{{ .content }}]\n',
              {{ end }}
-        ]
+        ];
 
+        // TODO: Refactor this ugly thing
         var help = '\n[[b;white;]Available commands:]\n' +
-                      '\n\t\t' + availableCommands.join(' ') + '\n';
+                     '\n\t\t' + availableCommands.join(' ') + 
+                    '\n\t\tless <command> uses less as output method';
 
         var source =  '        _______            \n' +
                       '       |       |           \n' +
@@ -252,39 +264,72 @@ jQuery(document).ready(function($) {
                     
         switch(commands[0]) {
             case 'whois':
+                {{ if .Site.Params.whois.settings.useLess }}
+                useLess = true;
+                {{ end }}
                 echoArray(whois);
                 break;
             case 'social':
+                {{ if .Site.Params.social.settings.useLess }}
+                useLess = true;
+                {{ end }}
                 echoArray(social);
                 break;
             case 'work':
+                {{ if .Site.Params.work.settings.useLess }}
+                useLess = true;
+                {{ end }}
                 echoArray(work);
                 break;
             case 'education':
+                {{ if .Site.Params.education.settings.useLess }}
+                useLess = true;
+                {{ end }}
                 echoArray(education);
                 break;
             case 'skills':
+                {{ if .Site.Params.skills.settings.useLess }}
+                useLess = true;
+                {{ end }}
                 echoArray(skills);
                 break;
             case 'softskills':
+                {{ if .Site.Params.softskills.settings.useLess }}
+                useLess = true;
+                {{ end }}
                 echoArray(softSkills);
                 break;
             case 'languages':
+                {{ if .Site.Params.languages.settings.useLess }}
+                useLess = true;
+                {{ end }}
                 echoArray(languages);
                 break;
             case 'projects':
+                {{ if .Site.Params.projects.settings.useLess }}
+                useLess = true;
+                {{ end }}
                 echoArray(projects);
                 break;
             case 'certifications':
+                {{ if .Site.Params.certifications.settings.useLess }}
+                useLess = true;
+                {{ end }}
                 term.echo(certifications);
                 break;
             case '{{ .Site.Params.misc.commandName | default "misc"}}':
+                {{ if .Site.Params.misc.settings.useLess }}
+                useLess = true;
+                {{ end }}
                 echoArray(misc);
                 break;
             case 'help':
                 term.echo(help);
                 break;
             case 'all':
+                {{ if .Site.Params.all.settings.useLess }}
+                useLess = true;
+                {{ end }}
                 echoArray(all.flat(1));
                 break;
             {{ if .Site.Params.startxLocation }}
@@ -298,6 +343,9 @@ jQuery(document).ready(function($) {
                 term.echo("nice try");
                 break;
             case 'source':
+                {{ if .Site.Params.misc.settings.useLess }}
+                useLess = true;
+                {{ end }}
                 term.echo(source);
                 break;
             {{ if .Site.Params.exitLocation }}

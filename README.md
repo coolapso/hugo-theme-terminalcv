@@ -55,6 +55,10 @@ Live example at: https://coolapso.sh
   * **version:** Shows the website version
     * Disabled by default
     * only enabled if provided a version parameter
+* Less, print commands output with less 
+    * Global, all commands use less instead of standard output
+    * Per command, only defined commands use less as output method
+    * `less <command>`, will output using less instead of standard output
 * Command auto completion
 * progression bars can be interrupted by pressing `ctrl+d` 
 * Favicons 
