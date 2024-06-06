@@ -92,8 +92,7 @@ jQuery(document).ready(function($) {
         ];
 
         var social = [
-        // TODO: Move this setting to the social settings
-        {{ if .Site.Params.hideSocialName }}
+        {{ if .Site.Params.social.settings.hideName }}
             {{ with .Site.Params.social.details }}
                 {{ range . }} 
                 '{{ .url }}',

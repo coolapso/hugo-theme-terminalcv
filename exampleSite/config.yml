@@ -10,7 +10,6 @@ params:
 # promptSimbols: ":~$"
 # promptSimbolsColor: grey
 # startxLocation: https://example.com
-# hideSocialName: true
 # useLess: true
   exitLocation: 'about:blank'
   source: true
@@ -36,6 +35,7 @@ params:
   social:
     # settings:
     #   useLess: true
+    #   hideName: true
     details:
     ## IF you want to keep them aligned just add spaces
     - name: "github"
