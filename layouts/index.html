@@ -96,13 +96,13 @@ jQuery(document).ready(function($) {
         }
 
         // Calculate the tabbing to keep commands and descriptions aligned in the help message
-        let longestKeyLength = Math.max(...Object.keys(commands).map(key => key.length));
-        
         function padKey(key, length) {
             return key + ' '.repeat(length - key.length);
         }
 
         function commandsHelp() {
+            let longestKeyLength = Math.max(...Object.keys(commands).map(key => key.length));
+
             commandsHelp = ""
             for (let key in commands) {
                 if (commands.hasOwnProperty(key)) {
@@ -137,23 +137,33 @@ jQuery(document).ready(function($) {
         {{ end }}
         ];
 
-        var social = [
-        {{ if .Site.Params.social.settings.hideName }}
-            {{ with .Site.Params.social.details }}
-                {{ range . }} 
-                '{{ .url }}',
+        function social() { 
+            var hideName = false;
+            let sMap = { 
+                {{ with .Site.Params.social.details }} 
+                    {{ range. }}
+                    {{ .name }}: "{{ .url }}",
+                    {{ end }}
                 {{ end }}
-                '\r',
+            };
+
+            {{ if .Site.Params.social.settings.hideName }}
+            hideName = true
             {{ end }}
-        {{ else }}
-            {{ with .Site.Params.social.details }}
-                {{ range . }}
-                '{{ .name }}: {{ .url }}',
-                {{ end }}
-                '\r',
-            {{ end }}
-        {{ end }}
-        ];
+            socialText = []
+            for (let key in sMap) {
+                if (sMap.hasOwnProperty(key)) {
+                    if (hideName) {
+                        socialText.push(sMap[key]);
+                    } else { 
+                        let longestKeyLength = Math.max(...Object.keys(sMap).map(key => key.length));
+                        socialText.push(`${padKey(key, longestKeyLength)}\t${sMap[key]}`)
+                    };
+                }
+            }
+
+            return socialText
+        }
 
         var certifications = [
         {{ with .Site.Params.certifications.details }}
@@ -280,7 +290,7 @@ jQuery(document).ready(function($) {
 
         all = [ 
             whois,
-            social,
+            social(),
             work,
             education,
             skills,
@@ -313,7 +323,7 @@ jQuery(document).ready(function($) {
                 {{ if .Site.Params.social.settings.useLess }}
                 useLess = true;
                 {{ end }}
-                echoArray(social);
+                echoArray(social());
                 break;
             case 'work':
                 {{ if .Site.Params.work.settings.useLess }}

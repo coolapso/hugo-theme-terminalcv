@@ -38,19 +38,18 @@ params:
     #   useLess: true
     #   hideName: true
     details:
-    ## IF you want to keep them aligned just add spaces
     - name: "github"
-      url: "          https://github.com"
+      url: "https://github.com"
     - name: "facebook"
-      url: "        https://facebook.com"
+      url: "https://facebook.com"
     - name: "myspace"
-      url: "         https://myspace.com"
+      url: "https://myspace.com"
     - name: "hi5"
-      url: "             https://www.hi5.com"
+      url: "https://www.hi5.com"
     - name: "instagram"
-      url: "       https://instagram.com"
+      url: "https://instagram.com"
     - name: "Another social"
-      url: "  https://anothersocial.com"
+      url: "https://anothersocial.com"
 
   work:
     # settings:
