@@ -4,13 +4,14 @@ baseURL: "https://example.com"
 title: "terminalCV"
 
 params:
+  version: '2.0.0'
   description: "My terminal cv"
   prompt: "newuser@terminalcv"
-# promptColor: grey
-# promptSimbols: ":~$"
-# promptSimbolsColor: grey
-# startxLocation: https://example.com
-# useLess: true
+  # promptColor: grey
+  # promptSimbols: ":~$"
+  # promptSimbolsColor: grey
+  # startxLocation: https://example.com
+  # useLess: true
   exitLocation: 'about:blank'
   source: true
   greeting: | 
@@ -75,7 +76,8 @@ params:
       date: July 2008 - 2010
       description: Description about this default color job
 
-    education:
+  education:
+    details:
     - courseName: Red Color training
       color: red
       date: June 2019 - July 2019
@@ -102,7 +104,10 @@ params:
       percentage: 50
       description: Skill names can have colors too
 
-    softskills:
+  softskills:
+    # settings:
+    #   useLess: true
+    details:
     - name: SoftSkill 1
       color: red
       percentage: 80

@@ -2,16 +2,38 @@
 <script> 
 jQuery(document).ready(function($) {
     var animation = false;
-    var availableCommands = [
-        "all", "whois", 'social', 'work', 'education',
-        'skills', 'softskills', 'languages', 'projects',
-        {{ if .Site.Params.certifications }} 'certifications', {{ end }}
-        {{ if .Site.Params.startxLocation }} 'startx', {{ end }}
-        {{ if .Site.Params.exitLocation }} 'exit', {{ end }}
-        {{ if .Site.Params.misc }}{{ .Site.Params.misc.commandName | default "misc"}},{{end}}
-        {{ if not .Site.Params.hideSource }} 'source',{{ end }}
-        {{ if .Site.Params.version }} 'version', {{ end }}
-    ];
+
+    let commands = {
+        help: "shows help",
+        less: "Use less as output method",
+        whois: "list basic details",
+        social: "list social networks",
+        work: "list work experience",
+        education: "list education",
+        skills: "list core skills",
+        softskills: "list list soft skills",
+        languages: "list spoken languages",
+        projects: "list projects",
+        {{ if .Site.Params.certifications }} 
+            certifications: "list certifications",
+        {{ end }}
+        {{ if .Site.Params.startxLocation }}
+            startx: "starts graphical environment",
+        {{ end }}
+        {{ if .Site.Params.misc }}
+            {{ .Site.Params.misc.commandName | default "other" }}: "{{.Site.Params.misc.title }}",
+        {{ end }}
+        {{ if not .Site.Params.Source }}
+            source: "shows details about template powering this website",
+        {{ end }}
+        {{ if .Site.Params.version }}
+            version: "Current version",
+        {{ end }}
+        {{ if .Site.Params.exitLocation }}
+            exit: "exit the terminal",
+        {{ end }}
+        all: "Show all details",
+    };
 
     $('body').terminal(function(command, term) {
 
@@ -72,6 +94,30 @@ jQuery(document).ready(function($) {
                 }
             }
         }
+
+        // Calculate the tabbing to keep commands and descriptions aligned in the help message
+        let longestKeyLength = Math.max(...Object.keys(commands).map(key => key.length));
+        
+        function padKey(key, length) {
+            return key + ' '.repeat(length - key.length);
+        }
+
+        function commandsHelp() {
+            commandsHelp = ""
+            for (let key in commands) {
+                if (commands.hasOwnProperty(key)) {
+                    commandsHelp += ` ${padKey(key, longestKeyLength)}\t${commands[key]}\n`
+                }
+            }
+            return commandsHelp
+        }
+
+        //Help text message containing the commands and descriptions aligned
+        var help =  '\n[[b;white;]usage:]\n' +
+                    '\n <command> - execute the command\n' +
+                    ' less <command> - use less to display the output\n\n' +
+                    '\n[[b;white;]Available commands:]\n' + 
+                    commandsHelp();
 
         var whois = [
         {{ with .Site.Params.whois.details }} 
@@ -212,17 +258,12 @@ jQuery(document).ready(function($) {
         {{ end }}
         ];
     
-         var misc = [
+        var misc = [
              {{ with .Site.Params.misc }}
             '[[b;{{ .titleColor }};]{{ .title }}]\n' +
             '[[;{{ .contentColor }};]{{ .content }}]\n',
              {{ end }}
         ];
-
-        // TODO: Refactor this ugly thing
-        var help = '\n[[b;white;]Available commands:]\n' +
-                     '\n\t\t' + availableCommands.join(' ') + 
-                    '\n\t\tless <command> uses less as output method';
 
         var source =  '        _______            \n' +
                       '       |       |           \n' +
@@ -323,7 +364,7 @@ jQuery(document).ready(function($) {
                 echoArray(misc);
                 break;
             case 'help':
-                term.echo(help);
+                term.echo(help)
                 break;
             case 'all':
                 {{ if .Site.Params.all.settings.useLess }}
@@ -381,7 +422,7 @@ jQuery(document).ready(function($) {
             }
         },
         autocompleteMenu: true,
-        completion: availableCommands
+        completion: Object.keys(commands)
         
     });
 });
