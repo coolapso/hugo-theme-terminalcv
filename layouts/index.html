@@ -3,7 +3,7 @@
 jQuery(document).ready(function($) {
     var animation = false;
 
-    let commands = {
+    var commands = {
         help: "shows help",
         less: "Use less as output method",
         whois: "list basic details",
@@ -35,14 +35,240 @@ jQuery(document).ready(function($) {
         all: "Show all details",
     };
 
+    function progressBar(number) {
+        var barLength = Math.round(number / 10);
+        var barFilled = Array(barLength + 1).join("&#9611;");
+        var barBlank= Array(11 - barLength).join("&#9617;");
+
+        return barFilled + barBlank
+    }
+
+    // Calculate the tabbing to keep commands and descriptions aligned in the help message
+    function padKey(key, length) {
+        return key + ' '.repeat(length - key.length);
+    }
+
+    function commandsHelp() {
+        let longestKeyLength = Math.max(...Object.keys(commands).map(key => key.length));
+
+        let helpText = ""
+        for (let key in commands) {
+            if (commands.hasOwnProperty(key)) {
+                helpText += ` ${padKey(key, longestKeyLength)}\t${commands[key]}\n`
+            }
+        }
+        return helpText
+    }
+
+    var help = '\n[[b;white;]usage:]\n' +
+                '\n <command> - execute the command\n' +
+                ' less <command> - use less to display the output\n\n' +
+                '\n[[b;white;]Available commands:]\n' + 
+               commandsHelp();
+
+    var whois = [
+    {{ with .Site.Params.whois.details }} 
+        '[[b;grey;]Name:]\t\t\t{{ .name }}\n' + 
+        '[[b;grey;]Profession:]\t\t{{ .profession }}\n' +
+        '[[b;grey;]Location:]\t\t{{ .location }}\n' +
+        {{ if .email }}
+        '[[b;grey;]Email:]\t\t\t{{ .email }}\n' +
+        {{ end }}
+        {{ if .homelink }}
+        '[[b;grey;]Homepage:]\t\t{{ .homelink }}\n' +
+        {{ end }}
+        {{ if .description }}
+        '{{ .description }}' +
+        {{ end }}
+        '\r',
+    {{ end }}
+    ];
+
+    function social() { 
+        var hideName = false;
+        let sMap = { 
+            {{ with .Site.Params.social.details }} 
+                {{ range. }}
+                {{ .name }}: "{{ .url }}",
+                {{ end }}
+            {{ end }}
+        };
+
+        {{ if .Site.Params.social.settings.hideName }}
+        hideName = true
+        {{ end }}
+        socialText = []
+        for (let key in sMap) {
+            if (sMap.hasOwnProperty(key)) {
+                if (hideName) {
+                    socialText.push(sMap[key]);
+                } else { 
+                    let longestKeyLength = Math.max(...Object.keys(sMap).map(key => key.length));
+                    socialText.push(`${padKey(key, longestKeyLength)}\t${sMap[key]}`)
+                };
+            }
+        }
+
+        return socialText
+    }
+
+    var certifications = [
+    {{ with .Site.Params.certifications.details }}
+        {{ range . }}
+            '---\n' +
+            '[[b;{{ .color | default "grey" }};]{{ .certName }}]\n' +
+            '{{ .date }}\n' +
+            {{ if .company }}
+            '{{ .company }}\n' +
+            {{ end }}
+            {{ if .description }}
+            '{{ .description }}\n' +
+            {{ end }}
+            '\r',
+        {{ end }}
+    {{ end }}
+    ];
+    
+    var work = [
+    {{ with .Site.Params.work.details }}
+        {{ range .}}
+            '---\n' +
+            '[[b;{{ .color | default "grey" }};]{{ .jobTitle }}]\n' +
+            '{{ .company }}\n' +
+            '{{ .location}}\n' +
+            '{{ .date }}\n' +
+            '\n' +
+            '{{ .description }}' +
+            '\r',
+        {{ end }}
+    {{ end }}
+    ];
+
+    var education = [
+    {{ with .Site.Params.education.details }}
+        {{ range . }}
+            '---\n' +
+            '[[b;{{ .color | default "grey" }};]{{ .courseName }}]\n' +
+            '{{ .date }}\n' +
+            {{ if .description }}
+                "{{ .description }}\n" +
+            {{ end }}
+            "\r",
+        {{ end }}
+    {{ end }}
+    ];
+
+    var projects = [
+    {{ with .Site.Params.projects.details }}
+        {{ range .}}
+            '---\n' +
+            '[[b;{{ .color | default "grey" }};]{{ .title }}]\n' +
+            '{{ .date }}\n' +
+            '{{ .link }}\n' +
+            {{ if .description }}
+            '{{ .description }}\n' +
+            {{ end }}
+            "\r",
+      {{ end }}
+    {{ end }}
+    ];
+
+    var skills = [
+    {{ with .Site.Params.skills.details }}
+        {{ range . }}
+            '[[b;{{ .color | default "grey" }};]{{ .name }}:]\n' +
+            progressBar({{ .percentage }}) +
+            '{{ .percentage }}' + '%\n' +
+            {{ if .description }}
+            '{{ .description }}\n' +
+            {{ end }}
+            '\r',
+        {{ end }}
+    {{ end }}
+    ];
+
+    var softSkills = [
+    {{ with .Site.Params.softSkills.details }}
+        {{ range . }}
+            '[[b;{{ .color | default "grey" }};]{{ .name }}:]\n' +
+            progressBar({{ .percentage }}) +
+            '{{ .percentage }}' + '%\n' + 
+            {{ if .description }}
+            '{{ .description }}\n' +
+            {{ end }}
+            '\r',
+        {{ end }}
+    {{ end }}
+    ];
+  
+    var languages = [
+    {{ with .Site.Params.languages.details }}
+        {{ range . }}
+            '[[b;{{ .color | default "grey" }};]{{ .name }}:]\n' +
+            progressBar({{ .percentage }})+ 
+            '{{ .percentage }}' + '%\n' +
+            {{ if .description }}
+            '{{ .description }}\n' +
+            {{ end }}
+            '\r',
+        {{ end }}
+    {{ end }}
+    ];
+
+    var misc = [
+         {{ with .Site.Params.misc }}
+        '[[b;{{ .titleColor }};]{{ .title }}]\n' +
+        '[[;{{ .contentColor }};]{{ .content }}]\n',
+         {{ end }}
+    ];
+
+    var source =  '        _______            \n' +
+                  '       |       |           \n' +
+                  '       |       |           \n' +
+                  '       |_______|_______    \n' +
+                  '               |       |   \n' +
+                  '               |       |   \n' +
+                  ' ______________|_______|   \n' +
+                  '|      |       |       |   \n' +
+                  '|      |       |       |   \n' +
+                  '|______|_______|_______|   \n' +
+                  '[[;red;]May the source be with you]\n' +
+                  '[[;grey;]https://github.com/coolapso/hugo-theme-terminalcv\n';
+
+    var all = [ 
+        whois,
+        social(),
+        work,
+        education,
+        skills,
+        softSkills,
+        languages,
+        projects,
+        certifications,
+        misc,
+        {{ if .Site.Params.misc }}
+        {{ end }}
+        {{ if .Site.Params.source }}
+        source,
+        {{ end }}
+    ]
+
     $('body').terminal(function(command, term) {
 
-        
-        let useLess = false;
+        var useLess = false;
         {{if .Site.Params.useLess }}
         useLess = true;
         {{ end }}
 
+        function echoArray(array) {
+            if (useLess) {
+                term.less(array);
+            } else {
+                for (i = 0; i < array.length; i += 1) {
+                    term.echo(array[i]);
+                }
+            }
+        }
         //Funciton used by StartX to draw the progressBar
         function progress(percent, width) {
             var size = Math.round(width*percent/100);
@@ -76,235 +302,6 @@ jQuery(document).ready(function($) {
                 }
             })();
         }
-
-        function progressBar(number) {
-            var barLength = Math.round(number / 10);
-            var barFilled = Array(barLength + 1).join("&#9611;");
-            var barBlank= Array(11 - barLength).join("&#9617;");
-
-            return barFilled + barBlank
-        }
-
-        function echoArray(array) {
-            if (useLess) {
-                term.less(array);
-            } else {
-                for (i = 0; i < array.length; i += 1) {
-                    term.echo(array[i]);
-                }
-            }
-        }
-
-        // Calculate the tabbing to keep commands and descriptions aligned in the help message
-        function padKey(key, length) {
-            return key + ' '.repeat(length - key.length);
-        }
-
-        function commandsHelp() {
-            let longestKeyLength = Math.max(...Object.keys(commands).map(key => key.length));
-
-            commandsHelp = ""
-            for (let key in commands) {
-                if (commands.hasOwnProperty(key)) {
-                    commandsHelp += ` ${padKey(key, longestKeyLength)}\t${commands[key]}\n`
-                }
-            }
-            return commandsHelp
-        }
-
-        //Help text message containing the commands and descriptions aligned
-        var help =  '\n[[b;white;]usage:]\n' +
-                    '\n <command> - execute the command\n' +
-                    ' less <command> - use less to display the output\n\n' +
-                    '\n[[b;white;]Available commands:]\n' + 
-                    commandsHelp();
-
-        var whois = [
-        {{ with .Site.Params.whois.details }} 
-            '[[b;grey;]Name:]\t\t\t{{ .name }}\n' + 
-            '[[b;grey;]Profession:]\t\t{{ .profession }}\n' +
-            '[[b;grey;]Location:]\t\t{{ .location }}\n' +
-            {{ if .email }}
-            '[[b;grey;]Email:]\t\t\t{{ .email }}\n' +
-            {{ end }}
-            {{ if .homelink }}
-            '[[b;grey;]Homepage:]\t\t{{ .homelink }}\n' +
-            {{ end }}
-            {{ if .description }}
-            '{{ .description }}' +
-            {{ end }}
-            '\r',
-        {{ end }}
-        ];
-
-        function social() { 
-            var hideName = false;
-            let sMap = { 
-                {{ with .Site.Params.social.details }} 
-                    {{ range. }}
-                    {{ .name }}: "{{ .url }}",
-                    {{ end }}
-                {{ end }}
-            };
-
-            {{ if .Site.Params.social.settings.hideName }}
-            hideName = true
-            {{ end }}
-            socialText = []
-            for (let key in sMap) {
-                if (sMap.hasOwnProperty(key)) {
-                    if (hideName) {
-                        socialText.push(sMap[key]);
-                    } else { 
-                        let longestKeyLength = Math.max(...Object.keys(sMap).map(key => key.length));
-                        socialText.push(`${padKey(key, longestKeyLength)}\t${sMap[key]}`)
-                    };
-                }
-            }
-
-            return socialText
-        }
-
-        var certifications = [
-        {{ with .Site.Params.certifications.details }}
-            {{ range . }}
-                '---\n' +
-                '[[b;{{ .color | default "grey" }};]{{ .certName }}]\n' +
-                '{{ .date }}\n' +
-                {{ if .company }}
-                '{{ .company }}\n' +
-                {{ end }}
-                {{ if .description }}
-                '{{ .description }}\n' +
-                {{ end }}
-                '\r',
-            {{ end }}
-        {{ end }}
-        ];
-        
-        var work = [
-        {{ with .Site.Params.work.details }}
-            {{ range .}}
-                '---\n' +
-                '[[b;{{ .color | default "grey" }};]{{ .jobTitle }}]\n' +
-                '{{ .company }}\n' +
-                '{{ .location}}\n' +
-                '{{ .date }}\n' +
-                '\n' +
-                '{{ .description }}' +
-                '\r',
-            {{ end }}
-        {{ end }}
-        ];
-
-        var education = [
-        {{ with .Site.Params.education.details }}
-            {{ range . }}
-                '---\n' +
-                '[[b;{{ .color | default "grey" }};]{{ .courseName }}]\n' +
-                '{{ .date }}\n' +
-                {{ if .description }}
-                    "{{ .description }}\n" +
-                {{ end }}
-                "\r",
-            {{ end }}
-        {{ end }}
-        ];
-
-        var projects = [
-        {{ with .Site.Params.projects.details }}
-            {{ range .}}
-                '---\n' +
-                '[[b;{{ .color | default "grey" }};]{{ .title }}]\n' +
-                '{{ .date }}\n' +
-                '{{ .link }}\n' +
-                {{ if .description }}
-                '{{ .description }}\n' +
-                {{ end }}
-                "\r",
-          {{ end }}
-        {{ end }}
-        ];
-
-        var skills = [
-        {{ with .Site.Params.skills.details }}
-            {{ range . }}
-                '[[b;{{ .color | default "grey" }};]{{ .name }}:]\n' +
-                progressBar({{ .percentage }}) +
-                '{{ .percentage }}' + '%\n' +
-                {{ if .description }}
-                '{{ .description }}\n' +
-                {{ end }}
-                '\r',
-            {{ end }}
-        {{ end }}
-        ];
-
-        var softSkills = [
-        {{ with .Site.Params.softSkills.details }}
-            {{ range . }}
-                '[[b;{{ .color | default "grey" }};]{{ .name }}:]\n' +
-                progressBar({{ .percentage }}) +
-                '{{ .percentage }}' + '%\n' + 
-                {{ if .description }}
-                '{{ .description }}\n' +
-                {{ end }}
-                '\r',
-            {{ end }}
-        {{ end }}
-        ];
-      
-        var languages = [
-        {{ with .Site.Params.languages.details }}
-            {{ range . }}
-                '[[b;{{ .color | default "grey" }};]{{ .name }}:]\n' +
-                progressBar({{ .percentage }})+ 
-                '{{ .percentage }}' + '%\n' +
-                {{ if .description }}
-                '{{ .description }}\n' +
-                {{ end }}
-                '\r',
-            {{ end }}
-        {{ end }}
-        ];
-    
-        var misc = [
-             {{ with .Site.Params.misc }}
-            '[[b;{{ .titleColor }};]{{ .title }}]\n' +
-            '[[;{{ .contentColor }};]{{ .content }}]\n',
-             {{ end }}
-        ];
-
-        var source =  '        _______            \n' +
-                      '       |       |           \n' +
-                      '       |       |           \n' +
-                      '       |_______|_______    \n' +
-                      '               |       |   \n' +
-                      '               |       |   \n' +
-                      ' ______________|_______|   \n' +
-                      '|      |       |       |   \n' +
-                      '|      |       |       |   \n' +
-                      '|______|_______|_______|   \n' +
-                      '[[;red;]May the source be with you]\n' +
-                      '[[;grey;]https://github.com/coolapso/hugo-theme-terminalcv\n';
-
-        all = [ 
-            whois,
-            social(),
-            work,
-            education,
-            skills,
-            softSkills,
-            languages,
-            projects,
-            certifications,
-            misc,
-            {{ if .Site.Params.misc }}
-            {{ end }}
-            {{ if .Site.Params.source }}
-            source,
-            {{ end }}
-        ]
 
         commands = command.split(/[ ]+/);
         if (commands[0] == 'less') {
@@ -374,7 +371,7 @@ jQuery(document).ready(function($) {
                 echoArray(misc);
                 break;
             case 'help':
-                term.echo(help)
+                term.echo(help);
                 break;
             case 'all':
                 {{ if .Site.Params.all.settings.useLess }}
