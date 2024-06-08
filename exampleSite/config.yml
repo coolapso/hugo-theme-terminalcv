@@ -1,7 +1,7 @@
 ## Example Config file
 baseURL: "https://example.com"
-#theme: "terminalCV"
-title: "terminalCV"
+theme: "terminalcv"
+title: "terminalcv"
 
 params:
   version: '2.0.0'
