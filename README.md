@@ -65,15 +65,21 @@ Live example at: https://coolapso.sh
 
 # How to start
 
-You can download the theme manually by going to [https://github.com/coolapso/hugo-theme-terminalcv.git](https://github.com/coolapso/hugo-theme-terminalcv.git) and pasting it to `themes/terminalcv` in your root directory.
+This theme is far more simplistic than most themes therefore running `hugo new site` creates a lot of things that are not necessary. 
 
-You can also clone it directly to your Hugo folder:
-
-``` bash
-$ git clone https://github.com/coolapso/hugo-theme-terminalcv.git themes/terminalcv
+```
+mkdir -p myterminalcv/themes
+cd myterminalcv
+git clone https://github.com/coolapso/hugo-theme-terminalcv themes/terminalcv
+cp themes/exampleSite/config.yaml .
+hugo server
 ```
 
-If you don't want to make any radical changes, it's the best option, because you can get new updates when they are available. To do so, include it as a git submodule:
+Now you can start personalizing it by changing the config.yaml and when you are happy just build the site with `hugo` 
+
+## Recommended way
+
+If you are using git (which you should be!) for your website and don't want to make any radical changes to the theme itself, it's recommended that you add the theme as a submodule. This way, you can easily get new updates when they are available.
 
 ``` bash
 $ git submodule add https://github.com/coolapso/hugo-theme-terminalcv.git themes/terminalcv
