@@ -90,7 +90,7 @@ All the content and configuration is done through the [config.yml](config.yml).
 
 you can just copy the existing example file and change it to your liking. 
 
-## Faviconss
+# Faviconss
 
 [RealFaviconGenerator](https://realfavicongenerator.net/) and put the generated files into the static your folder
 
@@ -103,6 +103,22 @@ If you like this theme and want to support / contribute in a different way you c
 <a href="https://www.buymeacoffee.com/coolapso" target="_blank">
   <img src="https://cdn.buymeacoffee.com/buttons/default-yellow.png" alt="Buy Me A Coffee" style="height: 51px !important;width: 217px !important;" />
 </a>
+
+# Development
+
+If you just want to make any changes and be able to test them as you progress, or if you simply just want to test the module wihtou having to create a new hugo website you can just run 
+
+```
+git clone https://github.com/coolapso/hugo-theme-terminalcv
+cd hugo-theme-terminalcv
+make server
+```
+ 
+if you don't have make, then you can just run: 
+
+```
+hugo server --config exampleSite/config.yml --theme ""
+```
 
 # jcubic/Jquery.Terminal
 
