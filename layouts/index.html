@@ -124,6 +124,9 @@ jQuery(document).ready(function($) {
             {{ if .description }}
             '{{ .description }}\n' +
             {{ end }}
+            {{ if .badge }}
+            'Badge: \t{{ .badge }}\n' +
+            {{ end }}
             '\r',
         {{ end }}
     {{ end }}

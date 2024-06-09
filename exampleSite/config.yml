@@ -159,6 +159,7 @@ params:
     - certName: Example Cert
       company: Example Certifying Company
       date: Date of Completion
+      badge: https://www.link.to.badge
       #description: Lorem Ipsum
   
   misc: 
