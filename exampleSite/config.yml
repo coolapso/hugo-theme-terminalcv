@@ -6,7 +6,29 @@ title: "terminalcv"
 params:
   version: '2.0.0'
   description: "My terminal cv"
-  prompt: "newuser@terminalcv"
+  prompt:
+    core:
+      text: "user@terminalCV"
+      color: 'pink'
+      before: '['
+      beforeColor: 'red'
+      after: '\]'
+      afterColor: 'red'
+      # separator: '-'
+    separator:
+      text: "-"
+      # color: 
+    path: 
+      before: '['
+      beforeColor: 'red'
+      text: '~/terminalcv'
+      color: 'blue'
+      after: '\]'
+      afterColor: 'red'
+    extra:
+      text: ": "
+      color: 'orange'
+
   # promptColor: grey
   # promptSimbols: ":~$"
   # promptSimbolsColor: grey
@@ -14,9 +36,16 @@ params:
   # useLess: true
   exitLocation: 'about:blank'
   source: true
+  #use a ‎ (blank character) if your first character of the ascii art is a whitespace
   greeting: | 
-    Welcome to my online resume
+    ‎ _                      _             _  _______      __
+    | |                    (_)           | |/ ____\ \    / /
+    | |_ ___ _ __ _ __ ___  _ _ __   __ _| | |     \ \  / / 
+    | __/ _ \ '__| '_ ` _ \| | '_ \ / _` | | |      \ \/ /  
+    | ||  __/ |  | | | | | | | | | | (_| | | |____   \  /   
+     \__\___|_|  |_| |_| |_|_|_| |_|\__,_|_|\_____|   \/
 
+    Welcome to my online resume
 
     Type 'help' for a list of available commands
 

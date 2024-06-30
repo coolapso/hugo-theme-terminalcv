@@ -17,10 +17,18 @@ Live example at: https://coolapso.sh
 * Custom Greeting
   * Multi line text is respected
 * Customizable prompt
+  * Custom before & after prompt text
+  * Custom before & after prompt colors
   * Custom prompt text
   * Custom prompt text Color
+  * custom separator text
+  * custom separator color
+  * custom before & after symbols text
+  * custom before & after symbols colors
   * Custom symbols
   * Custom symbols color
+  * Custom extra text
+  * Custom extra text color
 * Multiple sections with individual commands: 
   * **Whois:** General information about the individual
   * **social:** shows social networks
