@@ -1,5 +1,12 @@
 {{ define "body" }}
 <script> 
+{{ with .Site.Params.zoomLevel }} 
+window.onload = function() {
+    document.body.style.transform = "scale({{ .scale }})";
+    document.body.style.transformOrigin = "0 0";
+};
+{{ end }}
+
 jQuery(document).ready(function($) {
     var animation = false;
 
@@ -10,10 +17,18 @@ jQuery(document).ready(function($) {
         social: "list social networks",
         work: "list work experience",
         education: "list education",
-        skills: "list core skills",
-        softskills: "list soft skills",
-        languages: "list spoken languages",
-        projects: "list projects",
+        {{ if .Site.Params.skills }}
+            skills: "list core skills",
+        {{ end }}
+        {{ if .Site.Params.softskills }}
+            softskills: "list soft skills",
+        {{ end }}
+        {{ if .Site.Params.languages }}
+            languages: "list spoken languages",
+        {{ end }}
+        {{ if .Site.Params.languages }}
+            projects: "list projects",
+        {{ end }}
         {{ if .Site.Params.certifications }} 
             certifications: "list certifications",
         {{ end }}
@@ -97,6 +112,7 @@ jQuery(document).ready(function($) {
         {{ if .Site.Params.social.settings.hideName }}
         hideName = true
         {{ end }}
+
         socialText = []
         for (let key in sMap) {
             if (sMap.hasOwnProperty(key)) {
@@ -109,6 +125,7 @@ jQuery(document).ready(function($) {
             }
         }
 
+        socialText.push('\r');
         return socialText
     }
 
@@ -238,15 +255,30 @@ jQuery(document).ready(function($) {
                   '[[;red;]May the source be with you]\n' +
                   '[[;grey;]https://github.com/coolapso/hugo-theme-terminalcv\n';
 
-    var all = [ 
+    var all = [
+        "################",
+        "# About Me",
+        "################",
         whois,
+        "################",
+        "# Social",
+        "################",
         social(),
+        "################",
+        "# experiences",
+        "################",
         work,
+        "################",
+        "# education",
+        "################",
         education,
         skills,
         softSkills,
         languages,
         projects,
+        "################",
+        "# certifications",
+        "################",
         certifications,
         misc,
         {{ if .Site.Params.misc }}
