@@ -24,6 +24,10 @@
             font-size: 18px;
         }
     </style>
-    {{ if .Site.Params.analytics.code }}
-        {{ .Site.Params.analytics.code }}
-    {{ end }}
+{{ if .Site.Params.analytics.code }}
+    {{ .Site.Params.analytics.code }}
+{{ end }}
+
+{{ if .Site.Params.customHeadCode }}
+    {{ .Site.Params.customHeadCode | safeHTML }}
+{{ end }}
