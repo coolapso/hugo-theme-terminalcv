@@ -399,11 +399,20 @@ jQuery(document).ready(function($) {
                 {{ end }}
                 term.echo(source);
                 break;
-            {{ if .Site.Params.exitLocation }}
             case 'exit':
-                term.echo("terminating ... ")
+            {{ if .Site.Params.exitLocation }}
+                term.echo("terminating ... ");
                 loading();
                 setTimeout(function(){window.location = '{{ .Site.Params.exitLocation }}'}, 2000);
+                break;
+            {{ else }}
+                term.echo("Terminating session, thanks for visiting");
+                loading();
+                setTimeout(function() {
+                  term.pause();
+                  term.clear();
+                  term.echo("{{ .Site.Params.exitMessage }}");
+                }, 2000);
                 break;
             {{ end }}
             {{ if .Site.Params.version }}
@@ -425,7 +434,6 @@ jQuery(document).ready(function($) {
           term.pause();
           term.typing('echo', 1, '{{ .Site.Params.bootsequence }}', function() {
             term.clear();
-            term.echo("[[b;{{ .Site.Params.greetingBannerColor | default "red" }};]{{ .Site.Params.greetingBanner }}{{ .Site.Params.version }}]");
             term.echo("[[b;{{ .Site.Params.greetingColor | default "green" }};]{{ .Site.Params.greeting }}]");
           });
           term.resume();

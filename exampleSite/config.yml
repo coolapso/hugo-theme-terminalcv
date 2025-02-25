@@ -34,7 +34,8 @@ params:
   # promptSimbolsColor: grey
   # startxLocation: https://example.com
   # useLess: true
-  exitLocation: "about:blank"
+  #exitLocation: "about:blank"
+  exitMessage: "[Session completed, the browserwindow can be safely closed]"
   source: true
   #use a ‎ (blank character) if your first character of the ascii art is a whitespace
   greeting: |
