@@ -425,7 +425,6 @@ jQuery(document).ready(function($) {
           term.pause();
           term.typing('echo', 1, '{{ .Site.Params.bootsequence }}', function() {
             term.clear();
-            term.echo("[[b;{{ .Site.Params.greetingBannerColor | default "red" }};]{{ .Site.Params.greetingBanner }}{{ .Site.Params.version }}]");
             term.echo("[[b;{{ .Site.Params.greetingColor | default "green" }};]{{ .Site.Params.greeting }}]");
           });
           term.resume();
