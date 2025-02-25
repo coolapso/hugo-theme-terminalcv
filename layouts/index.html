@@ -418,8 +418,23 @@ jQuery(document).ready(function($) {
                           "please type 'help' or '?' for a list of available commands\n");
         }
     }, {
+
+        {{ if .Site.Params.bootsequence }} 
+          greetings: false,
+          onInit: function(term) {
+          term.pause();
+          term.typing('echo', 1, '{{ .Site.Params.bootsequence }}', function() {
+            term.clear();
+            term.echo("[[b;{{ .Site.Params.greetingBannerColor | default "red" }};]{{ .Site.Params.greetingBanner }}{{ .Site.Params.version }}]");
+            term.echo("[[b;{{ .Site.Params.greetingColor | default "green" }};]{{ .Site.Params.greeting }}]");
+          });
+          term.resume();
+          },
+        {{ else }} 
+          greetings: "[[b;{{ .Site.Params.greetingColor | default "white" }};]{{ .Site.Params.greeting }}]",
+        {{ end }}
+
         prompt: '{{ with .Site.Params.prompt }}{{ with .core }}[[;{{ .beforeColor | default "grey" }};]{{ .before }}][[;{{ .color | default "grey" }};]{{ .text }}][[;{{ .afterColor | default "gey" }};]{{ .after }}]{{ end }}{{ with .separator }}[[;{{ .separatorColor | default "grey" }};]{{ .text }}]{{ end }}{{ with .path }}[[;{{ .beforeColor | default "grey" }};]{{ .before }}][[;{{ .color | default "grey" }};]{{ .text | default ":~$" }}][[;{{ .afterColor | default "grey" }};]{{ .after }}]{{ end }}{{ with .extra }}[[;{{ .color | default "grey" }};]{{ .text }}]{{ end }}{{ end }}',
-        greetings: "[[b;{{ .Site.Params.greetingColor | default "white" }};]{{ .Site.Params.greeting }}]",
 
         keydown: function(e, term) {
             if (animation) {
