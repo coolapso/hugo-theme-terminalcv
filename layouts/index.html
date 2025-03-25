@@ -434,7 +434,7 @@ jQuery(document).ready(function($) {
           term.pause();
           term.typing('echo', 1, '{{ .Site.Params.bootsequence }}', function() {
             term.clear();
-            term.echo("[[b;{{ .Site.Params.greetingColor | default "green" }};]{{ .Site.Params.greeting }}]");
+            term.echo("[[b;{{ .Site.Params.greetingColor | default "white" }};]{{ .Site.Params.greeting }}]");
           });
           term.resume();
           },
