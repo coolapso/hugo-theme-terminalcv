@@ -399,11 +399,20 @@ jQuery(document).ready(function($) {
                 {{ end }}
                 term.echo(source);
                 break;
-            {{ if .Site.Params.exitLocation }}
             case 'exit':
-                term.echo("terminating ... ")
+            {{ if .Site.Params.exitLocation }}
+                term.echo("terminating ... ");
                 loading();
                 setTimeout(function(){window.location = '{{ .Site.Params.exitLocation }}'}, 2000);
+                break;
+            {{ else }}
+                term.echo("Terminating session, thanks for visiting");
+                loading();
+                setTimeout(function() {
+                  term.pause();
+                  term.clear();
+                  term.echo("{{ .Site.Params.exitMessage }}");
+                }, 2000);
                 break;
             {{ end }}
             {{ if .Site.Params.version }}
@@ -418,8 +427,22 @@ jQuery(document).ready(function($) {
                           "please type 'help' or '?' for a list of available commands\n");
         }
     }, {
+
+        {{ if .Site.Params.bootsequence }} 
+          greetings: false,
+          onInit: function(term) {
+          term.pause();
+          term.typing('echo', 1, '{{ .Site.Params.bootsequence }}', function() {
+            term.clear();
+            term.echo("[[b;{{ .Site.Params.greetingColor | default "white" }};]{{ .Site.Params.greeting }}]");
+          });
+          term.resume();
+          },
+        {{ else }} 
+          greetings: "[[b;{{ .Site.Params.greetingColor | default "white" }};]{{ .Site.Params.greeting }}]",
+        {{ end }}
+
         prompt: '{{ with .Site.Params.prompt }}{{ with .core }}[[;{{ .beforeColor | default "grey" }};]{{ .before }}][[;{{ .color | default "grey" }};]{{ .text }}][[;{{ .afterColor | default "gey" }};]{{ .after }}]{{ end }}{{ with .separator }}[[;{{ .separatorColor | default "grey" }};]{{ .text }}]{{ end }}{{ with .path }}[[;{{ .beforeColor | default "grey" }};]{{ .before }}][[;{{ .color | default "grey" }};]{{ .text | default ":~$" }}][[;{{ .afterColor | default "grey" }};]{{ .after }}]{{ end }}{{ with .extra }}[[;{{ .color | default "grey" }};]{{ .text }}]{{ end }}{{ end }}',
-        greetings: "[[b;{{ .Site.Params.greetingColor | default "white" }};]{{ .Site.Params.greeting }}]",
 
         keydown: function(e, term) {
             if (animation) {
