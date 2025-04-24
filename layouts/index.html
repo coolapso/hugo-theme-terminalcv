@@ -20,6 +20,9 @@ jQuery(document).ready(function($) {
         {{ if .Site.Params.startxLocation }}
             startx: "starts graphical environment",
         {{ end }}
+        {{ if .Site.Params.contact.mailAPI }}
+            contact: "send a message",
+        {{ end }}
         {{ if .Site.Params.misc }}
             {{ .Site.Params.misc.commandName | default "other" }}: "{{.Site.Params.misc.title }}",
         {{ end }}
@@ -306,6 +309,213 @@ jQuery(document).ready(function($) {
             })();
         }
 
+        // function for human-check with randomly chosen ascii captcha's. 
+        function runASCtcha(callback) {
+
+          // select a random ascTcha
+          const ascTchas = JSON.parse('{{ .Site.Params.contact.ascTchas | jsonify | safeJS }}');
+          const rndmAscTcha = ascTchas[Math.floor(Math.random() * ascTchas.length)];
+
+          term.echo(`[[;{{ .Site.Params.contact.promptcolor }};]\nBefore we begin, please verify you\'re human.\n]`);
+          // show one of the images: 
+          term.echo('\n' + rndmAscTcha.image + '\n');
+          term.echo(`[[;{{ .Site.Params.contact.promptcolor }};]${rndmAscTcha.question}]`);
+
+          // ask and check answer
+          term.push(function(answer) {
+            if (rndmAscTcha.answers.includes(answer.trim().toLowerCase())) {
+              term.echo('[[b;green;]ASCtcha passed]');
+              term.echo(`[[;{{ .Site.Params.contact.promptcolor }};]You seem human enough, let's continue :) \n]`);
+              term.pop();
+              callback(); // continue the form or process
+            } else {
+              term.echo('[[b;red;]Incorrect...] [[;orange;]Are you sure you are human?]\nReturning to prompt');
+              term.pop();
+              return;
+            }
+          }, {
+            prompt: '[[;{{ .Site.Params.contact.promptcolor }};]Answer:  ]'
+          });
+        }
+
+        // if human; then contact
+        function contact () {
+          let index = 0;
+
+          // set the questions: 
+          var settings = {};
+          var questions = [
+            {
+              name: "name",
+              prompt: 'Enter your name: '
+            },
+            {
+              name: "email",
+              prompt: 'Enter your email address: '
+            },
+            {
+              name: "message",
+              prompt: 'Enter your message (type [[;{{ .Site.Params.contact.textcolor }};]END] on a new line to finish): '
+            },
+            {
+              name: "spambot",
+              prompt: 'Are you a spambot? (Y)es/(N)o ',
+              boolean: true
+            }
+          ];
+
+          // save prompt
+          const defaultPrompt = term.get_prompt();
+
+          // function to allow multiline message
+          function getMultilineInput(callback) {
+            let message = '';
+
+            const updatePrompt = (count) => `[[;{{ .Site.Params.contact.countercolor }};] ${count.toString().padStart(3, '0')}/{{ .Site.Params.contact.maxmessagechars }}] [[;{{ .Site.Params.contact.promptcolor }};]> ] `;
+            term.push(function handler(line) {
+              if (line.trim() === 'END') {
+                term.pop();
+                callback(message.trim());
+                return;
+              }
+              if ((message + line + '\n').length > {{ .Site.Params.contact.maxmessagechars }}) {
+                term.echo(`[[b;red;]Message too long! Max {{ .Site.Params.contact.maxmessagechars }} characters.]`);
+                return;
+              }
+              message += line + '\n';
+              term.set_prompt(updatePrompt(message.length));
+            }, {
+              prompt: updatePrompt(0),
+              name: 'message_input',
+            });
+          }
+
+          // ask questions
+          function ask_questions(step) {
+            var question = questions[step];
+            if (question) {
+              if (question.name === "message") {
+                term.echo(`[[;{{ .Site.Params.contact.promptcolor }};]${question.prompt}]`);
+                getMultilineInput((message) => {
+                  settings[question.name] = message;
+                  term.set_prompt(defaultPrompt);
+                  ask_questions(step + 1);
+                });
+                return;
+              }
+              term.push(function(command) {
+                if (question.boolean) {
+                  var value;
+                  if (command.match(/^Y(es)?/i)) {
+                    value = true;
+                  } else if (command.match(/^N(o)?/i)) {
+                    value = false;
+                  } else {
+                    value = true; 
+                  }
+                  settings[question.name] = value;
+                  term.pop();
+                  ask_questions(step+1);
+                } else {
+                  settings[question.name] = command;
+                  term.pop();
+                  ask_questions(step+1);
+                }
+              }, {
+                prompt: `[[;{{ .Site.Params.contact.promptcolor }};]${question.prompt || question.name + ": "}]`,
+              });
+            } else {
+              check();
+            }
+          }
+
+          // check answers
+          function check() {
+            term.echo(`\n[[;{{ .Site.Params.contact.promptcolor }};]Your settings:]`);
+            const str = Object.keys(settings).map(function(key) {
+              const value = settings[key];
+              return `[[b;{{ .Site.Params.contact.promptcolor }};]${key}]: [[;{{ .Site.Params.contact.textcolor }};]${value}]`;
+            }).join('\n');
+            term.echo(str);
+
+            term.push(function(command) {
+              if (command.match(/^y$/i)) {
+                const errors = [];
+
+                if (!settings.name || settings.name.trim() === '') {
+                  errors.push(' --> [[b;red;]Name is required.]');
+                }
+
+                if (!settings.email || !settings.email.match(/^[^@\s]+@[^@\s]+\.[^@\s]+$/)) {
+                  errors.push(' --> [[b;red;]The email address appears to be invalid.]');
+                }
+
+                if (!settings.message || settings.message.trim() === '') {
+                  errors.push(' --> [[b;red;] Message cannot be empty.]');
+                }
+
+                if (settings.message.length > {{ .Site.Params.contact.maxmessagechars }}) {
+                  errors.push(` --> [[b;red;]Message exceeds {{ .Site.Params.contact.maxmessagechars }} characters.]`);
+                }
+
+                if (settings.spambot !== false) {
+                  errors.push(' --> [[b;red;]You appear to be a spambot...]');
+                }
+
+                if (errors.length > 0) {
+                  term.echo('[[b;red;]Some issues were found:]');
+                  errors.forEach(err => term.echo(err));
+                  term.echo('Returning to prompt...');
+                  term.set_prompt(defaultPrompt);
+                  term.pop().history().enable();
+                  return;
+                }
+
+                settings.source = 'terminalcv-contact';
+
+                const filtered = Object.fromEntries(
+                  Object.entries(settings).filter(([key]) => !['spambot'].includes(key))
+                );
+
+                term.echo('[[b;green;]Thanks! Message looks good.]');
+                sendContactData(settings);
+                term.set_prompt(defaultPrompt);
+                term.pop().history().enable();
+
+              } else if (command.match(/^n$/i)) {
+                term.pop();
+                ask_questions(0);
+              } else {
+                term.echo(`[[;{{ .Site.Params.contact.promptcolor }};]Please enter 'y' or 'n']`);
+              }
+            }, {
+              prompt: `[[;{{ .Site.Params.contact.promptcolor }};]Does this look send-worthy? (y|n): ]`,
+            });
+          }
+
+          // send message via API
+          function sendContactData(data) {
+            fetch('{{ .Site.Params.contact.mailAPI }}', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify(data)
+            })
+            .then(res => res.json())
+            .then(response => {
+              term.echo('[[b;green;]--> Message sent!]');
+            })
+            .catch(err => {
+              console.error(err);
+              term.echo('[[b;red;]--> Failed to send message. Try again later.]');
+            });
+          }
+
+          term.history().disable();
+          ask_questions(0);
+        }
+
         commands = command.split(/[ ]+/);
         if (commands[0] == 'less') {
             useLess = true;
@@ -372,6 +582,15 @@ jQuery(document).ready(function($) {
                 useLess = true;
                 {{ end }}
                 echoArray(misc);
+                break;
+            case 'contact':
+                //check for API, then for human, then process contact
+                {{ if .Site.Params.contact.mailAPI }}
+                  term.clear();
+                  runASCtcha(function() {
+                    contact(); 
+                  });
+                {{ end }}
                 break;
             case 'help':
             case '?':

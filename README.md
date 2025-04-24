@@ -72,6 +72,12 @@ Live example at: <https://coolapso.sh>
 * Bootsequence:
   * Option for a custom bootsequence to mimic the boot process of the terminal
   * If the parameter is not set, the bootsequence is skipped.
+* CLI Contact Form
+  * Option for a contact form so visitors can message you
+  * Including customizable ascii captcha
+  * If no API is set to handle the message, the contact command is disabled
+    * Tested with AWS API, Lambda and AWS SES to handle the message, similar to [this](https://www.bomberbot.com/aws/how-to-build-a-serverless-contact-form-on-aws-ses-lambda-api-gateway/)
+  
 
 # How to start
 

@@ -50,6 +50,56 @@ params:
 
     Type 'help' for a list of available commands
 
+  contact:
+    # if mailAPI is empty, contact is disabled
+    mailAPI:
+    promptcolor: LemonChiffon
+    textcolor: orange
+    countercolor: lightblue
+    maxmessagechars: 300
+    ascTchas:
+      - image: |
+          ‎        .=     ,        =.
+          _  _   /'/    )\,/,/(_   \ \
+           `//-.|  (  ,\\)\//\)\/_  ) |
+           //___\   `\\\/\\/\/\\///'  /
+          ,"~`-._ `"--'_   `"""`  _ \`'"~-,_
+          \       `-.  '_`.      .'_` \ ,-"~`/
+           `.__.-'`/   (-\        /-) |-.__,'
+             ||   |     \o)  /^\ (o/  |
+             `\\  |         /   `\    /
+               \\  \       /      `\ /
+                `\\ `-.  /' .---.--.\
+                  `\\/`~(, '()      ('
+                   /(o) \\   _,.-.,_)
+                  //  \\ `\'`      /
+                / |  ||   `""""~"`
+               /'  |__||
+                     `o
+        question: "what can you drink from this creature?"
+        answers: ["milk", "urine"]
+      - image: |
+          ‎                            _
+                                    .' `'.__
+                                  /      \ `'"-,
+                  .-''''--...__..-/ .     |      \
+                .'               ; :'     '.  a   |
+              /                 | :.       \     =\
+              ;                   \':.      /  ,-.__;.-;`
+            /|     .              '--._   /-.7`._..-;`
+            ; |       '                |`-'      \  =|
+            |/\        .   -' /     /  ;         |  =/
+            (( ;.       ,_  .:|     | /     /\   | =|
+            ) / `\     | `""`;     / |    | /   / =/
+              | ::|    |      \    \ \    \ `--' =/
+              /  '/\    /       )    |/     `-...-`
+            /    | |  `\    /-'    /;
+            \  ,,/ |    \   d    .'  \
+            `""`   \  nnh  d_.-'l__nnh
+                      `"""`
+        question: "what is it you see?"
+        answers: ["elephant", "an elephant"]
+
   bootsequence: |
     User request detected
     Reserving Cloud Resources
