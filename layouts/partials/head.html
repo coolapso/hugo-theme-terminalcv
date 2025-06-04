@@ -15,19 +15,62 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.terminal/2.42.2/js/jquery.terminal.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery.terminal/js/less.min.js"></script>
     <script src="https://unpkg.com/jquery.terminal/js/autocomplete_menu.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/jquery.terminal/2.42.0/css/jquery.terminal.min.css" rel="stylesheet"/>
 
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/jquery.terminal/2.42.0/css/jquery.terminal.min.css" rel="stylesheet"/>
-
-    <style>
+    <style> /* Theme's original minimal inline style */
         body {
             width: 100%;
-            font-size: 18px;
+            font-size: 18px; /* This will be overridden by your more specific body styles below if needed */
         }
     </style>
-{{ if .Site.Params.analytics.code }}
+
+    <style type="text/css">
+      /* Paste all your CSS rules here, for example: */
+      html {
+        background-color: #000000;
+      }
+      body {
+        background-color: #000000;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        /* Note: If you set font-size here, ensure it's what you want for the body,
+           as the terminal's font is mainly controlled by --size.
+           The 18px from above will apply unless overridden here. */
+      }
+      .terminal {
+        max-width: 60%;
+        width: 100%;
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 5%;
+        --size: 1.35; /* Font size multiplier for desktop */
+      }
+      .terminal .terminal-output span.greeting-line {
+        display: block;
+        text-align: left;
+        white-space: pre;
+      }
+      .terminal .terminal-output div,
+      .terminal .cmd,
+      .terminal .cmd span,
+      .terminal .cmd div {
+        font-style: normal !important; /* Broader non-italic if needed */
+      }
+      .terminal-output > div > div:has(span.greeting-line)::before {
+        content: "" !important;
+        display: none !important;
+      }
+      @media (max-width: 767px) {
+        .terminal {
+          --size: 1.333; /* Smaller font for mobile */
+          max-width: 100%;
+        }
+      }
+    </style>
+    {{ if .Site.Params.analytics.code }}
     {{ .Site.Params.analytics.code }}
 {{ end }}
 
 {{ if .Site.Params.customHeadCode }}
-    {{ .Site.Params.customHeadCode | safeHTML }}
-{{ end }}
+    {{ .Site.Params.customHeadCode | safeHTML }} {{ end }}
