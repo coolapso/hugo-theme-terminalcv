@@ -1,5 +1,5 @@
 {{ define "body" }}
-<script> 
+<script>
 jQuery(document).ready(function($) {
     var animation = false;
 
@@ -14,7 +14,7 @@ jQuery(document).ready(function($) {
         softskills: "list soft skills",
         languages: "list spoken languages",
         projects: "list projects",
-        {{ if .Site.Params.certifications }} 
+        {{ if .Site.Params.certifications }}
             certifications: "list certifications",
         {{ end }}
         {{ if .Site.Params.startxLocation }}
@@ -63,12 +63,12 @@ jQuery(document).ready(function($) {
     var help = '\n[[b;white;]usage:]\n' +
                 '\n <command> - execute the command\n' +
                 ' less <command> - use less to display the output\n\n' +
-                '\n[[b;white;]Available commands:]\n' + 
+                '\n[[b;white;]Available commands:]\n' +
                commandsHelp();
 
     var whois = [
-    {{ with .Site.Params.whois.details }} 
-        '[[b;grey;]Name:]\t\t\t{{ .name }}\n' + 
+    {{ with .Site.Params.whois.details }}
+        '[[b;grey;]Name:]\t\t\t{{ .name }}\n' +
         '[[b;grey;]Profession:]\t\t{{ .profession }}\n' +
         '[[b;grey;]Location:]\t\t{{ .location }}\n' +
         {{ if .email }}
@@ -84,10 +84,10 @@ jQuery(document).ready(function($) {
     {{ end }}
     ];
 
-    function social() { 
+    function social() {
         var hideName = false;
-        let sMap = { 
-            {{ with .Site.Params.social.details }} 
+        let sMap = {
+            {{ with .Site.Params.social.details }}
                 {{ range. }}
                 {{ .name }}: "{{ .url }}",
                 {{ end }}
@@ -102,7 +102,7 @@ jQuery(document).ready(function($) {
             if (sMap.hasOwnProperty(key)) {
                 if (hideName) {
                     socialText.push(sMap[key]);
-                } else { 
+                } else {
                     let longestKeyLength = Math.max(...Object.keys(sMap).map(key => key.length));
                     socialText.push(`${padKey(key, longestKeyLength)}\t${sMap[key]}`)
                 };
@@ -131,7 +131,7 @@ jQuery(document).ready(function($) {
         {{ end }}
     {{ end }}
     ];
-    
+
     var work = [
     {{ with .Site.Params.work.details }}
         {{ range .}}
@@ -195,7 +195,7 @@ jQuery(document).ready(function($) {
         {{ range . }}
             '[[b;{{ .color | default "grey" }};]{{ .name }}:]\n' +
             progressBar({{ .percentage }}) +
-            '{{ .percentage }}' + '%\n' + 
+            '{{ .percentage }}' + '%\n' +
             {{ if .description }}
             '{{ .description }}\n' +
             {{ end }}
@@ -203,12 +203,12 @@ jQuery(document).ready(function($) {
         {{ end }}
     {{ end }}
     ];
-  
+
     var languages = [
     {{ with .Site.Params.languages.details }}
         {{ range . }}
             '[[b;{{ .color | default "grey" }};]{{ .name }}:]\n' +
-            progressBar({{ .percentage }})+ 
+            progressBar({{ .percentage }})+
             '{{ .percentage }}' + '%\n' +
             {{ if .description }}
             '{{ .description }}\n' +
@@ -238,7 +238,7 @@ jQuery(document).ready(function($) {
                   '[[;red;]May the source be with you]\n' +
                   '[[;grey;]https://github.com/coolapso/hugo-theme-terminalcv\n';
 
-    var all = [ 
+    var all = [
         whois,
         social(),
         work,
@@ -310,8 +310,8 @@ jQuery(document).ready(function($) {
         if (commands[0] == 'less') {
             useLess = true;
             commands.shift();
-        } 
-                    
+        }
+
         switch(commands[0]) {
             case 'whois':
                 {{ if .Site.Params.whois.settings.useLess }}
@@ -428,17 +428,33 @@ jQuery(document).ready(function($) {
         }
     }, {
 
-        {{ if .Site.Params.bootsequence }} 
+        {{ if .Site.Params.bootsequence }}
           greetings: false,
           onInit: function(term) {
-          term.pause();
-          term.typing('echo', 1, '{{ .Site.Params.bootsequence }}', function() {
-            term.clear();
-            term.echo("[[b;{{ .Site.Params.greetingColor | default "white" }};]{{ .Site.Params.greeting }}]");
+          term.pause(); // Pauses the terminal initially
+          term.typing('echo', 10, '{{ .Site.Params.bootsequence }}', function() { // Callback 1: Executed when bootsequence typing is complete.
+
+            // Bootsequence has finished typing. Now we wait before clearing and showing the greeting.
+            setTimeout(function() { // Callback 2: Executed after the delay.
+              term.clear(); // Clear the bootsequence text.
+
+              // Echo the main greeting (with the 'greeting-line' class modification).
+              var rawGreeting = {{ .Site.Params.greeting }}; // Using the version without | safeJS that worked for you.
+              var greetingLines = rawGreeting.split('\n');
+              var formattedGreeting = "";
+              greetingLines.forEach(function(line) {
+                  formattedGreeting += "[[b;{{ .Site.Params.greetingColor | default "white" }};;greeting-line]" + line + "]\n";
+              });
+              term.echo(formattedGreeting.trim());
+
+              term.resume(); // Resume the terminal AFTER the delay and AFTER the main greeting is shown.
+            }, 1500); //
+
           });
-          term.resume();
+          // Note: The original term.resume() that was at the end of onInit is removed from here
+          // because we now want to resume only after the greeting is displayed post-delay.
           },
-        {{ else }} 
+        {{ else }}
           greetings: "[[b;{{ .Site.Params.greetingColor | default "white" }};]{{ .Site.Params.greeting }}]",
         {{ end }}
 
@@ -457,7 +473,7 @@ jQuery(document).ready(function($) {
         },
         autocompleteMenu: true,
         completion: Object.keys(commands)
-        
+
     });
 });
 </script>
