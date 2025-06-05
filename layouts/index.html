@@ -4,21 +4,25 @@ jQuery(document).ready(function($) {
     var animation = false;
 
     var commands = {
-        help: "shows help",
+        help: "Shows this message",
         less: "Use less as output method",
-        whois: "list basic details",
-        social: "list social networks",
-        work: "list work experience",
-        education: "list education",
-        skills: "list core skills",
-        softskills: "list soft skills",
-        languages: "list spoken languages",
-        projects: "list projects",
+        whois: "Admin details",
+        social: "Social networks",
+        work: "Work experience",
+        education: "Education and more",
+        skills: "Tech skills",
+        {{ if .Site.Params.softskills }}
+            softskills: "Useful skills",
+        {{ end }}
+        languages: "Spoken languages",
+        {{ if .Site.Params.projects }}
+            projects: "Personal projects",
+        {{ end }}
         {{ if .Site.Params.certifications }}
-            certifications: "list certifications",
+            certifications: "Certifications",
         {{ end }}
         {{ if .Site.Params.startxLocation }}
-            startx: "starts graphical environment",
+            startx: "Go to my blog :)",
         {{ end }}
         {{ if .Site.Params.misc }}
             {{ .Site.Params.misc.commandName | default "other" }}: "{{.Site.Params.misc.title }}",
@@ -61,13 +65,17 @@ jQuery(document).ready(function($) {
     }
 
     var help = '\n[[b;white;]usage:]\n' +
-                '\n <command> - execute the command\n' +
+                ' <command> - execute the command\n' +
                 ' less <command> - use less to display the output\n\n' +
                 '\n[[b;white;]Available commands:]\n' +
                commandsHelp();
 
     var whois = [
     {{ with .Site.Params.whois.details }}
+        {{ if .photo }}
+        '{{ .photo }}' +
+        '\r',
+        {{ end }}
         '[[b;grey;]Name:]\t\t\t{{ .name }}\n' +
         '[[b;grey;]Profession:]\t\t{{ .profession }}\n' +
         '[[b;grey;]Location:]\t\t{{ .location }}\n' +
@@ -432,20 +440,34 @@ jQuery(document).ready(function($) {
           greetings: false,
           onInit: function(term) {
           term.pause(); // Pauses the terminal initially
-          term.typing('echo', 10, '{{ .Site.Params.bootsequence }}', function() { // Callback 1: Executed when bootsequence typing is complete.
+          term.typing('echo', 5, '{{ .Site.Params.bootsequence }}', function() { // Callback 1: Executed when bootsequence typing is complete.
 
             // Bootsequence has finished typing. Now we wait before clearing and showing the greeting.
             setTimeout(function() { // Callback 2: Executed after the delay.
               term.clear(); // Clear the bootsequence text.
 
               // Echo the main greeting (with the 'greeting-line' class modification).
-              var rawGreeting = {{ .Site.Params.greeting }}; // Using the version without | safeJS that worked for you.
+              var banner = {{ .Site.Params.banner }};
+              var rawGreeting = {{ .Site.Params.greeting }};
+              var instruction = {{ .Site.Params.instruction }};
+              var bannerLines = banner.split('\n');
               var greetingLines = rawGreeting.split('\n');
+              var instructionLines = instruction.split('\n');
+              var formattedBanner = "";
               var formattedGreeting = "";
+              var formattedInstruction = "";
+              bannerLines.forEach(function(line) {
+                  formattedBanner += "[[b;{{ .Site.Params.bannerColor | default "white" }};;banner-line]" + line + "]\n";
+              });
               greetingLines.forEach(function(line) {
                   formattedGreeting += "[[b;{{ .Site.Params.greetingColor | default "white" }};;greeting-line]" + line + "]\n";
               });
+              instructionLines.forEach(function(line) {
+                  formattedInstruction += "[[;{{ .Site.Params.instructionColor | default "gray" }};;instruction-line]" + line + "]\n";
+              });
+              term.echo(formattedBanner.trim());
               term.echo(formattedGreeting.trim());
+              term.echo(formattedInstruction.trim());
 
               term.resume(); // Resume the terminal AFTER the delay and AFTER the main greeting is shown.
             }, 1500); //

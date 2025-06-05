@@ -45,7 +45,17 @@
         margin-right: auto;
         margin-top: 5%;
         --size: 1.35; /* Font size multiplier for desktop */
+      /* --- CSS TO HIDE SCROLLBAR --- */
+        scrollbar-width: none;          /* For Firefox */
+        -ms-overflow-style: none;     /* For Internet Explorer and older Edge */
       }
+
+      /* For WebKit-based browsers (Chrome, Safari, new Edge, Opera) */
+      .terminal::-webkit-scrollbar {
+        display: none;                /* Hides the scrollbar completely */
+      }
+      /* --- END CSS TO HIDE SCROLLBAR --- */
+
       .terminal .terminal-output span.greeting-line {
         display: block;
         text-align: left;
@@ -63,7 +73,7 @@
       }
       @media (max-width: 767px) {
         .terminal {
-          --size: 1.333; /* Smaller font for mobile */
+          --size: 1; /* Smaller font for mobile */
           max-width: 100%;
         }
       }
