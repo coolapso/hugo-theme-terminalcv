@@ -27,7 +27,7 @@ jQuery(document).ready(function($) {
         {{ if .Site.Params.misc }}
             {{ .Site.Params.misc.commandName | default "other" }}: "{{.Site.Params.misc.title }}",
         {{ end }}
-        {{ if not .Site.Params.Source }}
+        {{ if .Site.Params.Source }}
             source: "shows details about template powering this website",
         {{ end }}
         {{ if .Site.Params.version }}
@@ -262,11 +262,11 @@ jQuery(document).ready(function($) {
         softSkills,
         languages,
         projects,
-        misc,
         {{ if .Site.Params.misc }}
+          misc,
         {{ end }}
         {{ if .Site.Params.source }}
-        source,
+          source,
         {{ end }}
     ]
 
