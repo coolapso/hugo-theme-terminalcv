@@ -123,17 +123,16 @@ jQuery(document).ready(function($) {
     var certifications = [
     {{ with .Site.Params.certifications.details }}
         {{ range . }}
-            '---\n' +
             '[[b;{{ .color | default "grey" }};]{{ .certName }}]\n' +
-            '{{ .date }}\n' +
             {{ if .company }}
             '{{ .company }}\n' +
             {{ end }}
+            '{{ .date }}\n' +
             {{ if .description }}
             '{{ .description }}\n' +
             {{ end }}
             {{ if .badge }}
-            'Badge: \t{{ .badge }}\n' +
+            '{{ .badge }}\n' +
             {{ end }}
             '\r',
         {{ end }}
@@ -142,14 +141,19 @@ jQuery(document).ready(function($) {
 
     var work = [
     {{ with .Site.Params.work.details }}
+        '\n---\n' +
         {{ range .}}
-            '---\n' +
             '[[b;{{ .color | default "grey" }};]{{ .jobTitle }}]\n' +
-            '{{ .company }}\n' +
-            '{{ .location}}\n' +
+            {{ if .company }}
+                "{{ .company }}\n" +
+            {{ end }}
+            {{ if .location }}
+                "{{ .location }}\n" +
+            {{ end }}
             '{{ .date }}\n' +
-            '\n' +
-            '{{ .description }}' +
+            {{ if .description }}
+                "{{ .description }}\n" +
+            {{ end }}
             '\r',
         {{ end }}
     {{ end }}
@@ -158,8 +162,8 @@ jQuery(document).ready(function($) {
     var education = [
     {{ with .Site.Params.education.details }}
         {{ range . }}
-            '---\n' +
             '[[b;{{ .color | default "grey" }};]{{ .courseName }}]\n' +
+            '{{ .school }}\n' +
             '{{ .date }}\n' +
             {{ if .description }}
                 "{{ .description }}\n" +
@@ -187,7 +191,7 @@ jQuery(document).ready(function($) {
     var skills = [
     {{ with .Site.Params.skills.details }}
         {{ range . }}
-            '[[b;{{ .color | default "grey" }};]{{ .name }}:]\n' +
+            '[[b;{{ .color | default "grey" }};]{{ .name }}]\n' +
             progressBar({{ .percentage }}) +
             '{{ .percentage }}' + '%\n' +
             {{ if .description }}
@@ -200,6 +204,7 @@ jQuery(document).ready(function($) {
 
     var softSkills = [
     {{ with .Site.Params.softSkills.details }}
+        '---\n' +
         {{ range . }}
             '[[b;{{ .color | default "grey" }};]{{ .name }}:]\n' +
             progressBar({{ .percentage }}) +
@@ -215,7 +220,7 @@ jQuery(document).ready(function($) {
     var languages = [
     {{ with .Site.Params.languages.details }}
         {{ range . }}
-            '[[b;{{ .color | default "grey" }};]{{ .name }}:]\n' +
+            '[[b;{{ .color | default "grey" }};]{{ .name }}]\n' +
             progressBar({{ .percentage }})+
             '{{ .percentage }}' + '%\n' +
             {{ if .description }}
@@ -228,6 +233,7 @@ jQuery(document).ready(function($) {
 
     var misc = [
          {{ with .Site.Params.misc }}
+        '---\n' +
         '[[b;{{ .titleColor }};]{{ .title }}]\n' +
         '[[;{{ .contentColor }};]{{ .content }}]\n',
          {{ end }}
@@ -251,11 +257,11 @@ jQuery(document).ready(function($) {
         social(),
         work,
         education,
+        certifications,
         skills,
         softSkills,
         languages,
         projects,
-        certifications,
         misc,
         {{ if .Site.Params.misc }}
         {{ end }}
