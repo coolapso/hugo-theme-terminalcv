@@ -24,6 +24,15 @@ jQuery(document).ready(function($) {
         {{ if .Site.Params.startxLocation }}
             startx: "Go to my blog :)",
         {{ end }}
+        {{ if .Site.Params.linkedin }}
+            linkedin: "{{ .Site.Params.linkedin.description }}",
+        {{ end }}
+        {{ if .Site.Params.github }}
+            github: "{{ .Site.Params.github.description }}",
+        {{ end }}
+        {{ if .Site.Params.instagram }}
+            instagram: "{{ .Site.Params.instagram.description }}",
+        {{ end }}
         {{ if .Site.Params.misc }}
             {{ .Site.Params.misc.commandName | default "other" }}: "{{.Site.Params.misc.title }}",
         {{ end }}
@@ -97,7 +106,7 @@ jQuery(document).ready(function($) {
         let sMap = {
             {{ with .Site.Params.social.details }}
                 {{ range. }}
-                {{ .name }}: "{{ .url }}",
+                "{{ .name | safeJS }}": "{{ .url | safeJS }}",
                 {{ end }}
             {{ end }}
         };
@@ -105,19 +114,21 @@ jQuery(document).ready(function($) {
         {{ if .Site.Params.social.settings.hideName }}
         hideName = true
         {{ end }}
-        socialText = []
+
+        let socialText = [];
         for (let key in sMap) {
             if (sMap.hasOwnProperty(key)) {
                 if (hideName) {
-                    socialText.push(sMap[key]);
+                    // If hideName is true, show the URL as the link text
+                    socialText.push(`<a href="${sMap[key]}">${sMap[key]}</a>`);
                 } else {
-                    let longestKeyLength = Math.max(...Object.keys(sMap).map(key => key.length));
-                    socialText.push(`${padKey(key, longestKeyLength)}\t${sMap[key]}`)
+                    // If hideName is false, show the name as the link text
+                    socialText.push(`[ <a href="${sMap[key]}">${key}</a> ]`);
                 };
             }
         }
 
-        return socialText
+        return socialText;
     }
 
     var certifications = [
@@ -286,7 +297,16 @@ jQuery(document).ready(function($) {
                 }
             }
         }
-        //Function used by StartX to draw the progressBar
+
+        function echoLinks(array) {
+            if (array && array.length > 0) {
+                // Join the array items with two spaces in between
+                // and echo the resulting single string once as raw HTML.
+                term.echo(array.join('  '), { raw: true });
+            }
+        }
+
+        //Function used by StartX and social networks to draw the progressBar
         function progress(percent, width) {
             var size = Math.round(width*percent/100);
             var left = '', taken = '', i;
@@ -332,12 +352,11 @@ jQuery(document).ready(function($) {
                 useLess = true;
                 {{ end }}
                 echoArray(whois);
+                echoLinks(social());
                 break;
             case 'social':
-                {{ if .Site.Params.social.settings.useLess }}
-                useLess = true;
-                {{ end }}
-                echoArray(social());
+                //echoArray(social());
+                echoLinks(social());
                 break;
             case 'work':
                 {{ if .Site.Params.work.settings.useLess }}
@@ -399,9 +418,24 @@ jQuery(document).ready(function($) {
                 break;
             {{ if .Site.Params.startxLocation }}
             case 'startx':
-                term.echo("loading ...");
+                term.echo("loading blog...");
                 loading();
                 setTimeout(function(){window.location = "{{ .Site.Params.startxLocation }}"}, 2000);
+                break;
+            case 'github':
+                term.echo("loading GitHub profile...");
+                loading();
+                setTimeout(function(){window.location = "{{ .Site.Params.github.url }}"}, 2000);
+                break;
+            case 'instagram':
+                term.echo("loading Instragram account...");
+                loading();
+                setTimeout(function(){window.location = "{{ .Site.Params.instagram.url }}"}, 2000);
+                break;
+            case 'linkedin':
+                term.echo("loading LinkedIn profile...");
+                loading();
+                setTimeout(function(){window.location = "{{ .Site.Params.linkedin.url }}"}, 2000);
                 break;
             {{ end }}
             case ':(){:|:&};:':
