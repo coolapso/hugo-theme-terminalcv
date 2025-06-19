@@ -32,7 +32,9 @@ jQuery(document).ready(function($) {
         {{ if .Site.Params.exitLocation }}
             exit: "exit the terminal",
         {{ end }}
-        all: "Show all details",
+        all: "Show all details about me",
+        posts: "List all posts",
+        cat: "Open a post",
     };
 
     function progressBar(number) {
@@ -110,8 +112,35 @@ jQuery(document).ready(function($) {
         }
 
         return socialText
-    }
+    };
 
+    function posts(term) {
+        $.ajax({
+            url: "posts/",
+            type: 'GET',
+            success: function(data) {
+                term.echo(data, {raw: true}); 
+            },
+            error: function() {
+                term.echo("Error: Could not load posts data");
+            }
+        });
+    };
+
+
+    function catPost(term, postdir) {
+        url = "/posts/" + postdir + "/";
+        $.ajax({
+            url: url,
+            type: 'GET',
+            success: function(data) {
+                term.echo(data, {raw: true});
+            },
+            error: function() {
+                term.echo("Error: Could not load post " + postdir);
+            }
+        });
+    }
     var certifications = [
     {{ with .Site.Params.certifications.details }}
         {{ range . }}
@@ -420,6 +449,17 @@ jQuery(document).ready(function($) {
                 term.echo("{{ .Site.Params.version }}");
                 break;
             {{ end }}
+            case 'cat':
+                if (commands.length < 2) {
+                    term.echo("Usage: cat <filename>");
+                } else {
+                    var  postdir = commands[1];
+                    catPost(term, postdir);
+                }
+                break;
+            case 'posts':
+                posts(term);
+                break;
             case '':
                 break;
             default:

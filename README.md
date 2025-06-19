@@ -7,12 +7,15 @@
 
 # General Information
 
-An easy to setup and (almost) fully customizable command line style CV theme
+An easy to setup and (almost) fully hackable command line style CV theme with blogging capabilities
 
 Live example at: <https://coolapso.sh>
 
 # Features
 
+* Blogging:
+  * Support for images
+  * Supoort for [hugo shortcodes](https://gohugo.io/content-management/shortcodes/) (not fully tested, but should work!)
 * Custom Greeting
   * Multi line text is respected
 * Customizable prompt
@@ -72,7 +75,6 @@ Live example at: <https://coolapso.sh>
 * Bootsequence:
   * Option for a custom bootsequence to mimic the boot process of the terminal
   * If the parameter is not set, the bootsequence is skipped.
-
 # How to start
 
 This theme is far more simplistic than most themes therefore running `hugo new site` creates a lot of things that are not necessary.
@@ -104,6 +106,23 @@ you can just copy the existing example file and change it to your liking.
 # Faviconss
 
 [RealFaviconGenerator](https://realfavicongenerator.net/) and put the generated files into the static your folder
+
+# Blog posts
+
+The theme supports blog posts, site visitors can find the posts with the `posts` command, and can view posts with `cat <filename>` to see how it works you can read the [example post](/exampleSite/content/posts/examplepost/index.md). 
+
+The live demo may not be making use of the blogging capabilities, but you can always see it in action like this:
+
+> [!IMPORTANT]  
+> Be sure to have hugo installed before proceeding
+
+```
+git clone https://github.com/coolapso/hugo-theme-terminalcv
+cd hugo-theme-terminalcv
+make server
+```
+
+Now a demo will be available at http://localhost:1313
 
 # Contributions
 

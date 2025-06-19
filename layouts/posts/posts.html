@@ -1,0 +1,28 @@
+{{ define "main" }}
+To read a post a post do: <strong>cat filename</strong><br>
+---<br>
+<br>
+{{ range $index, $posts := .Site.RegularPages.ByDate.Reverse }}
+<strong>Filename:</strong> {{ strings.TrimSuffix "/" (strings.TrimPrefix "/posts/" .RelPermalink) }}<br>
+<strong>Date:</strong> {{ $posts.Date.Format "January 2, 2006" }}<br>
+<strong>Author: </strong> {{ $posts.Params.Author}}<br>
+
+{{ if $posts.Params.readingTime }}
+<strong>Reading Time</strong> {{ .Params.readingTime }}<br>
+{{ end }}
+{{ if $posts.Params.category }}
+<strong>Category:</strong> {{ $posts.Params.category }}<br>
+{{ end }}
+{{ if $posts.Params.tags }}
+<strong>Tags:</strong> {{ range $posts.Params.tags }}{{ . }} {{ end }}<br>
+{{ end }}
+<br>
+{{ $posts.Title }}
+{{ $posts.Params.description }}<br>
+{{ if $index }}
+{{ else }}
+---<br>
+<br>
+{{ end }}
+{{ end }}
+{{ end }}

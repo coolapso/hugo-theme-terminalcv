@@ -1,0 +1,12 @@
+<h1>{{ .Title }}</h1>
+---<br>
+<strong>Author:</strong> {{ .Params.author }}<br>
+<strong>Date:</strong> {{ .Date.Format "January 2, 2006" }}<br>
+---<br>
+<br>
+{{ with .Params.Description }}
+{{ . }}
+{{ end }}
+<br>
+<br>
+{{ .Content }}
