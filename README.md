@@ -112,7 +112,7 @@ you can just copy the existing example file and change it to your liking.
 The theme supports blog posts, site visitors can find the posts with the `posts` command, and can view posts with `cat <filename>` to see how it works you can read the [example post](/exampleSite/content/posts/examplepost/index.md). 
 
 
-![terminalCV](https://raw.githubusercontent.com/coolapso/hugo-theme-terminalcv/master/images/blogdemo.gif)
+![terminalCV](https://raw.githubusercontent.com/coolapso/hugo-theme-terminalcv/main/images/blogdemo.gif)
 
 
 The live demo may not be making use of the blogging capabilities, but you can always see it in action like this:
