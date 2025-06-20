@@ -32,11 +32,13 @@ jQuery(document).ready(function($) {
         {{ if .Site.Params.exitLocation }}
             exit: "exit the terminal",
         {{ end }}
+        {{ if .Site.Params.blog }}
         posts: "List all posts",
         {{ if .Site.Params.listLS }}
         ls: "List all posts",
         {{ end }}
         cat: "Open a post",
+        {{ end }}
         all: "Show all details about me",
     };
 
@@ -452,6 +454,7 @@ jQuery(document).ready(function($) {
                 term.echo("{{ .Site.Params.version }}");
                 break;
             {{ end }}
+            {{ if .Site.Params.blog }}
             case 'cat':
                 if (commands.length < 2) {
                     term.echo("Usage: cat <filename>");
@@ -464,6 +467,7 @@ jQuery(document).ready(function($) {
             case 'ls':
                 posts(term);
                 break;
+            {{ end }}
             case '':
                 break;
             default:
