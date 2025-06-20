@@ -33,6 +33,9 @@ jQuery(document).ready(function($) {
             exit: "exit the terminal",
         {{ end }}
         posts: "List all posts",
+        {{ if .Site.Params.listLS }}
+        ls: "List all posts",
+        {{ end }}
         cat: "Open a post",
         all: "Show all details about me",
     };
@@ -458,6 +461,7 @@ jQuery(document).ready(function($) {
                 }
                 break;
             case 'posts':
+            case 'ls':
                 posts(term);
                 break;
             case '':
