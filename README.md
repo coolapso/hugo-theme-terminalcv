@@ -14,6 +14,7 @@ Live example at: <https://coolapso.sh>
 # Features
 
 * Blogging:
+  * Toggle support, don't want blog features? just disable them!
   * Support for images
   * Supoort for [hugo shortcodes](https://gohugo.io/content-management/shortcodes/) (not fully tested, but should work!)
 * Custom Greeting
@@ -109,7 +110,15 @@ you can just copy the existing example file and change it to your liking.
 
 # Blog posts
 
-The theme supports blog posts, site visitors can find the posts with the `posts` command, and can view posts with `cat <filename>` to see how it works you can read the [example post](/exampleSite/content/posts/examplepost/index.md). 
+blog post functionalities are enabled/disabled with the `blog` key in the params section
+
+```yaml
+params:
+  blog: true
+```
+
+The theme supports blog posts, site visitors can find the posts with the `posts` or `ls` commands, and can view posts with `cat <filename>` to see how it works you can read the [example post](/exampleSite/content/posts/examplepost/index.md). 
+
 
 
 ![terminalCV](https://raw.githubusercontent.com/coolapso/hugo-theme-terminalcv/main/images/blogdemo.gif)
