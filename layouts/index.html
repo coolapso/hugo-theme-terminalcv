@@ -299,7 +299,12 @@ jQuery(document).ready(function($) {
 
         function echoArray(array) {
             if (useLess) {
-                term.less(array);
+                term.less(array, {
+                    onExit: function () {
+                        term.set_command('');
+                        term.scroll_to_bottom();
+                    },
+                });
             } else {
                 for (i = 0; i < array.length; i += 1) {
                     term.echo(array[i]);
@@ -399,7 +404,7 @@ jQuery(document).ready(function($) {
                 {{ if .Site.Params.certifications.settings.useLess }}
                 useLess = true;
                 {{ end }}
-                term.echo(certifications);
+                echoArray(certifications);
                 break;
             case '{{ .Site.Params.misc.commandName | default "misc"}}':
                 {{ if .Site.Params.misc.settings.useLess }}
