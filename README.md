@@ -84,11 +84,11 @@ This theme is far more simplistic than most themes therefore running `hugo new s
 mkdir -p myterminalcv/themes
 cd myterminalcv
 git clone https://github.com/coolapso/hugo-theme-terminalcv themes/terminalcv
-cp themes/exampleSite/config.yaml .
+cp themes/terminalcv/exampleSite/config.yml .
 hugo server
 ```
 
-Now you can start personalizing it by changing the config.yaml and when you are happy just build the site with `hugo`
+Now you can start personalizing it by changing the config.yml and when you are happy just build the site with `hugo`
 
 ## Recommended way
 
