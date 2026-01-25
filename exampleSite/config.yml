@@ -216,6 +216,33 @@ params:
         link: https://example.com/default
         #description: not there either
 
+  publications:
+    # settings:
+    #   useLess: true
+    details:
+      - title: "Machine Learning for Terminal Enthusiasts"
+        color: green
+        authors: "John Doe, Jane Smith"
+        venue: "Journal of Terminal Computing, Vol. 42"
+        date: "2025"
+        link: "https://example.com/paper1"
+        description: "A comprehensive study on ML applications in terminal interfaces"
+
+      - title: "The Art of ASCII: Modern Approaches"
+        color: blue
+        authors: "John Doe"
+        venue: "International Conference on Text-Based Interfaces (ICTBI)"
+        date: "2024"
+        link: "https://example.com/paper2"
+        #description:
+
+      - title: "Understanding Command Line User Experience"
+        authors: "John Doe, Bob Wilson, Alice Brown"
+        venue: "ACM Transactions on Human-Computer Interaction"
+        date: "2023"
+        #link:
+        description: "Research on improving CLI usability and accessibility"
+
   certifications:
     # settings:
     #   useLess: true

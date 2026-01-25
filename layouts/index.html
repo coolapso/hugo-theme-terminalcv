@@ -28,6 +28,9 @@ jQuery(document).ready(function($) {
         {{ if .Site.Params.projects }}
         projects: "list projects",
         {{ end }}
+        {{ if .Site.Params.publications }}
+        publications: "list publications",
+        {{ end }}
         {{ if .Site.Params.certifications }} 
             certifications: "list certifications",
         {{ end }}
@@ -224,6 +227,29 @@ jQuery(document).ready(function($) {
     {{ end }}
     ];
 
+    var publications = [
+    {{ with .Site.Params.publications.details }}
+        {{ range .}}
+            '---\n' +
+            '[[b;{{ .color | default "grey" }};]{{ .title }}]\n' +
+            {{ if .authors }}
+            '{{ .authors }}\n' +
+            {{ end }}
+            {{ if .venue }}
+            '{{ .venue }}\n' +
+            {{ end }}
+            '{{ .date }}\n' +
+            {{ if .link }}
+            '{{ .link }}\n' +
+            {{ end }}
+            {{ if .description }}
+            '{{ .description }}\n' +
+            {{ end }}
+            "\r",
+      {{ end }}
+    {{ end }}
+    ];
+
     var skills = [
     {{ with .Site.Params.skills.details }}
         {{ range . }}
@@ -308,6 +334,9 @@ jQuery(document).ready(function($) {
         {{ end }}
         {{ if .Site.Params.projects }}
         projects,
+        {{ end }}
+        {{ if .Site.Params.publications }}
+        publications,
         {{ end }}
         {{ if .Site.Params.certifications }}
         certifications,
@@ -442,6 +471,14 @@ jQuery(document).ready(function($) {
                 useLess = true;
                 {{ end }}
                 echoArray(projects);
+                break;
+            {{ end }}
+            {{ if .Site.Params.publications }}
+            case 'publications':
+                {{ if .Site.Params.publications.settings.useLess }}
+                useLess = true;
+                {{ end }}
+                echoArray(publications);
                 break;
             {{ end }}
             case 'certifications':
