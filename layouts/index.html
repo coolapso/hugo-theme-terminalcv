@@ -7,13 +7,27 @@ jQuery(document).ready(function($) {
         help: "shows help",
         less: "Use less as output method",
         whois: "list basic details",
+        {{ if .Site.Params.social }}
         social: "list social networks",
+        {{ end }}
+        {{ if .Site.Params.work }}
         work: "list work experience",
+        {{ end }}
+        {{ if .Site.Params.education }}
         education: "list education",
+        {{ end }}
+        {{ if .Site.Params.skills }}
         skills: "list core skills",
+        {{ end }}
+        {{ if .Site.Params.softSkills }}
         softskills: "list soft skills",
+        {{ end }}
+        {{ if .Site.Params.languages }}
         languages: "list spoken languages",
+        {{ end }}
+        {{ if .Site.Params.projects }}
         projects: "list projects",
+        {{ end }}
         {{ if .Site.Params.certifications }} 
             certifications: "list certifications",
         {{ end }}
@@ -274,16 +288,32 @@ jQuery(document).ready(function($) {
 
     var all = [ 
         whois,
+        {{ if .Site.Params.social }}
         social(),
+        {{ end }}
+        {{ if .Site.Params.work }}
         work,
+        {{ end }}
+        {{ if .Site.Params.education }}
         education,
+        {{ end }}
+        {{ if .Site.Params.skills }}
         skills,
+        {{ end }}
+        {{ if .Site.Params.softSkills }}
         softSkills,
+        {{ end }}
+        {{ if .Site.Params.languages }}
         languages,
+        {{ end }}
+        {{ if .Site.Params.projects }}
         projects,
+        {{ end }}
+        {{ if .Site.Params.certifications }}
         certifications,
-        misc,
+        {{ end }}
         {{ if .Site.Params.misc }}
+        misc,
         {{ end }}
         {{ if .Site.Params.source }}
         source,
@@ -358,48 +388,62 @@ jQuery(document).ready(function($) {
                 {{ end }}
                 echoArray(whois);
                 break;
+            {{ if .Site.Params.social }}
             case 'social':
                 {{ if .Site.Params.social.settings.useLess }}
                 useLess = true;
                 {{ end }}
                 echoArray(social());
                 break;
+            {{ end }}
+            {{ if .Site.Params.work }}
             case 'work':
                 {{ if .Site.Params.work.settings.useLess }}
                 useLess = true;
                 {{ end }}
                 echoArray(work);
                 break;
+            {{ end }}
+            {{ if .Site.Params.education }}
             case 'education':
                 {{ if .Site.Params.education.settings.useLess }}
                 useLess = true;
                 {{ end }}
                 echoArray(education);
                 break;
+            {{ end }}
+            {{ if .Site.Params.skills }}
             case 'skills':
                 {{ if .Site.Params.skills.settings.useLess }}
                 useLess = true;
                 {{ end }}
                 echoArray(skills);
                 break;
+            {{ end }}
+            {{ if .Site.Params.softSkills }}
             case 'softskills':
                 {{ if .Site.Params.softskills.settings.useLess }}
                 useLess = true;
                 {{ end }}
                 echoArray(softSkills);
                 break;
+            {{ end }}
+            {{ if .Site.Params.languages }}
             case 'languages':
                 {{ if .Site.Params.languages.settings.useLess }}
                 useLess = true;
                 {{ end }}
                 echoArray(languages);
                 break;
+            {{ end }}
+            {{ if .Site.Params.projects }}
             case 'projects':
                 {{ if .Site.Params.projects.settings.useLess }}
                 useLess = true;
                 {{ end }}
                 echoArray(projects);
                 break;
+            {{ end }}
             case 'certifications':
                 {{ if .Site.Params.certifications.settings.useLess }}
                 useLess = true;
